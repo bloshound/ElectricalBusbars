@@ -1,5 +1,7 @@
 package ru.bloshound.electricalbusbars;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -10,7 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import ru.bloshound.electricalbusbars.ui.main.SectionsPagerAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class BusbarsCalcActivity extends AppCompatActivity {
+
+    private static final String APP_PREFERENCES = "app_preferences";
+    private static final String QUANTITY_BAR = "quantity_bar";
+    private static final String LENGHT_BAR = "lenght_bar";
+
+    BusbarsCalcViewModel mMainViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +34,14 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
 
 
+        SharedPreferences mySharedPreferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        int quantity = mySharedPreferences.getInt(QUANTITY_BAR, 1);
+        int lenght = mySharedPreferences.getInt(LENGHT_BAR, 0);
+
+        mySharedPreferences.edit().apply();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
     }
+
 }

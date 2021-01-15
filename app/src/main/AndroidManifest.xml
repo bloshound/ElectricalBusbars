@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElectricalBusbars">
         <activity
-            android:name=".MainActivity"
+            android:name=".BusbarsCalcActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.ElectricalBusbars.NoActionBar">
             <intent-filter>
