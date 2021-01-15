@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import ru.bloshound.electricalbusbars.R;
 
 /**
@@ -19,7 +21,6 @@ public class BusbarHolderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private BusbarViewModel busbarViewModel;
-
 
 
     public static BusbarHolderFragment newInstance(int index) {
@@ -47,8 +48,9 @@ public class BusbarHolderFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
+
+
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
