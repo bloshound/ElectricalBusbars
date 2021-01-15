@@ -1,5 +1,5 @@
 <resources>
-    <array name="quantity_busbar">
+    <string-array name="quantity_busbar">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -10,7 +10,7 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-    </array>
+    </string-array>
 
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
