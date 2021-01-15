@@ -20,4 +20,13 @@
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
 
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
