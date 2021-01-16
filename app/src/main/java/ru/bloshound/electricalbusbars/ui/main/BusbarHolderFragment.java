@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,10 +21,9 @@ import ru.bloshound.electricalbusbars.R;
  */
 public class BusbarHolderFragment extends Fragment {
 
+
     private static final String ARG_SECTION_NUMBER = "section_number";
-
     private BusbarViewModel busbarViewModel;
-
 
     public static BusbarHolderFragment newInstance(int index) {
         BusbarHolderFragment fragment = new BusbarHolderFragment();
@@ -41,6 +42,8 @@ public class BusbarHolderFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         busbarViewModel.setIndex(index);
+
+
     }
 
     @Override
@@ -51,15 +54,24 @@ public class BusbarHolderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
+
         Slider quantitySlider = (Slider) root.findViewById(R.id.slider_quantity);
         Slider lengthSlider = (Slider) root.findViewById(R.id.slider_length);
         Slider widthSlider = (Slider) root.findViewById(R.id.slider_width);
         Slider thicknessSlider = (Slider) root.findViewById(R.id.slider_thickness);
 
+        EditText quantityEd = (EditText) root.findViewById(R.id.ed_quantity);
+        EditText lengthEd = (EditText) root.findViewById(R.id.ed_length);
+        EditText widthEd = (EditText) root.findViewById(R.id.ed_width);
+        EditText thicknessEd = (EditText) root.findViewById(R.id.ed_thickness);
+
+
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
+
     }
+
 
 }
