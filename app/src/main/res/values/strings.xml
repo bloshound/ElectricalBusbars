@@ -1,4 +1,5 @@
 <resources>
+
     <string-array name="quantity_busbar">
         <item>1</item>
         <item>2</item>
@@ -12,8 +13,16 @@
         <item>10</item>
     </string-array>
 
+
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="app_name">Electrical Busbars</string>
+
+    <integer name="min_value">1</integer>
+    <integer name="step_size">1</integer>
+    <integer name="quantity_max_value">10</integer>
+    <integer name="length_max_value">1000</integer>
+    <integer name="width_max_value">150</integer>
+    <integer name="thickness_max_value">20</integer>
 
 </resources>

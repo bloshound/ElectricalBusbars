@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.slider.Slider;
 
 import ru.bloshound.electricalbusbars.R;
 
@@ -48,7 +49,12 @@ public class BusbarHolderFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
+        Slider quantitySlider = (Slider) root.findViewById(R.id.slider_quantity);
+        Slider lengthSlider = (Slider) root.findViewById(R.id.slider_length);
+        Slider widthSlider = (Slider) root.findViewById(R.id.slider_width);
+        Slider thicknessSlider = (Slider) root.findViewById(R.id.slider_thickness);
 
 
 

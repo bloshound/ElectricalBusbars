@@ -41,4 +41,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/btn_star_big_on" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

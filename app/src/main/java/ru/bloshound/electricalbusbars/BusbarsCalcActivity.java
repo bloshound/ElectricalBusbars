@@ -21,7 +21,7 @@ public class BusbarsCalcActivity extends AppCompatActivity {
     private static final String QUANTITY_BUSBAR = "quantity_busbar";
     private static final String LENGTH_BUSBAR = "length_busbar";
     private static final String WIDTH_BUSBAR = "width_busbar";
-    private static final String THIKNESS_BUSBAR = "thickness_busbar";
+    private static final String THICKNESS_BUSBAR = "thickness_busbar";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class BusbarsCalcActivity extends AppCompatActivity {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
 
         ViewPager viewPager = findViewById(R.id.view_pager);
+
         viewPager.setAdapter(sectionsPagerAdapter);
 
         TabLayout tabs = findViewById(R.id.tabs);
@@ -40,7 +41,7 @@ public class BusbarsCalcActivity extends AppCompatActivity {
         int quantity = mPreferences.getInt(QUANTITY_BUSBAR, 1); // колличество шин
         int lenght = mPreferences.getInt(LENGTH_BUSBAR, 1); // длина шины
         int width = mPreferences.getInt(WIDTH_BUSBAR, 50); // ширина шины  шины
-        int thickness = mPreferences.getInt(THIKNESS_BUSBAR, 6); //толшина шины
+        int thickness = mPreferences.getInt(THICKNESS_BUSBAR, 6); //толшина шины
 
 
 
