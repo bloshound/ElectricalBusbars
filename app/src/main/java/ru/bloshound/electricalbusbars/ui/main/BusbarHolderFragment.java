@@ -1,12 +1,12 @@
 package ru.bloshound.electricalbusbars.ui.main;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,11 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.slider.Slider;
 
 import ru.bloshound.electricalbusbars.R;
+import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
+import ru.bloshound.electricalbusbars.util.VariableValueWatcher;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class BusbarHolderFragment extends Fragment {
+
+
+    String quantity = "1";
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -66,12 +71,24 @@ public class BusbarHolderFragment extends Fragment {
         EditText thicknessEd = (EditText) root.findViewById(R.id.ed_thickness);
 
 
+        quantityEd.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10)});
+        quantityEd.addTextChangedListener(new VariableValueWatcher(quantity));
+        System.out.println(quantity);
+        quantitySlider.setValue(Integer.parseInt(quantity));
+
+
+
+
+
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
 
     }
+
+
+
 
 
 }

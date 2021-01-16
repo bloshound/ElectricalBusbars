@@ -9,7 +9,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import ru.bloshound.electricalbusbars.ui.main.SectionsPagerAdapter;
