@@ -1,6 +1,7 @@
 package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,8 +21,9 @@ import com.google.android.material.slider.Slider;
 import ru.bloshound.electricalbusbars.R;
 import ru.bloshound.electricalbusbars.repo.Busbar;
 import ru.bloshound.electricalbusbars.repo.CopperBusbar;
+import ru.bloshound.electricalbusbars.util.AfterTextChangeWatcher;
 import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
-import ru.bloshound.electricalbusbars.util.LiveDataTextWatcher;
+import ru.bloshound.electricalbusbars.util.SlliderObserver;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -65,6 +67,8 @@ public class BusbarHolderFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
+        MutableLiveData<Busbar> busbarLD = busbarViewModel.getBusbar();
+        MutableLiveData<String> quantityLD = busbarViewModel.getQuantity();
 
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
 
@@ -73,20 +77,23 @@ public class BusbarHolderFragment extends Fragment {
         Slider widthSlider = (Slider) root.findViewById(R.id.slider_width);
         Slider thicknessSlider = (Slider) root.findViewById(R.id.slider_thickness);
 
-        EditText quantityEd = (EditText) root.findViewById(R.id.ed_quantity);
-        EditText lengthEd = (EditText) root.findViewById(R.id.ed_length);
-        EditText widthEd = (EditText) root.findViewById(R.id.ed_width);
-        EditText thicknessEd = (EditText) root.findViewById(R.id.ed_thickness);
+        EditText quantityEditText = (EditText) root.findViewById(R.id.ed_quantity);
+        EditText lengthEditText = (EditText) root.findViewById(R.id.ed_length);
+        EditText widthEditText = (EditText) root.findViewById(R.id.ed_width);
+        EditText thicknessEditText = (EditText) root.findViewById(R.id.ed_thickness);
 
-        Observer<String> qantityObserver = s -> {
-            if (TextUtils.isDigitsOnly(s) && !TextUtils.isEmpty(s)) {
-                int i = Integer.parseInt(s);
-                if (i >= quantitySlider.getValueFrom() && i <= quantitySlider.getValueTo())
-                    quantitySlider.setValue(i);
+        Observer<String> quantityObserver = new SlliderObserver(quantitySlider);
+
+        quantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10)});
+        quantityLD.observe(this, quantityObserver);
+        quantityEditText.addTextChangedListener(new AfterTextChangeWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                quantityLD.setValue(s.toString());
             }
-        };
+        });
 
-        Observer<Busbar> busbarLengthObserver = s -> {
+        Observer<Busbar> lengthObserver = s -> {
             int i = s.getLength();
             String sl = String.valueOf(i);
             if (TextUtils.isDigitsOnly(sl) && !TextUtils.isEmpty(sl)) {
@@ -95,19 +102,11 @@ public class BusbarHolderFragment extends Fragment {
             }
         };
 
-        quantityEd.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10)});
-        MutableLiveData<String> quantityLD = busbarViewModel.getQuantity();
-        quantityLD.observe(this, qantityObserver);
-        quantityEd.addTextChangedListener(new LiveDataTextWatcher(quantityLD));
-
-
+        lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 500)});
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
-
         return root;
 
     }
-
-
 }
