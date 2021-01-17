@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.ui.main;
+package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.content.Context;
 

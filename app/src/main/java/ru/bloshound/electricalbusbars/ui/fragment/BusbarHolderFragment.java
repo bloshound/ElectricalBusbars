@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.ui.main;
+package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -24,16 +24,17 @@ import ru.bloshound.electricalbusbars.util.VariableValueWatcher;
 public class BusbarHolderFragment extends Fragment {
 
 
-    String quantity = "1";
-
-
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+
+
     private BusbarViewModel busbarViewModel;
 
     public static BusbarHolderFragment newInstance(int index) {
         BusbarHolderFragment fragment = new BusbarHolderFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
+
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -47,6 +48,8 @@ public class BusbarHolderFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         busbarViewModel.setIndex(index);
+
+
 
 
     }
@@ -72,13 +75,6 @@ public class BusbarHolderFragment extends Fragment {
 
 
         quantityEd.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10)});
-        quantityEd.addTextChangedListener(new VariableValueWatcher(quantity));
-        System.out.println(quantity);
-        quantitySlider.setValue(Integer.parseInt(quantity));
-
-
-
-
 
 
 

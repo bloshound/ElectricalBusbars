@@ -11,7 +11,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import ru.bloshound.electricalbusbars.ui.main.SectionsPagerAdapter;
+
+import ru.bloshound.electricalbusbars.repo.Busbar;
+import ru.bloshound.electricalbusbars.repo.CopperBusbar;
+import ru.bloshound.electricalbusbars.ui.fragment.SectionsPagerAdapter;
 
 public class BusbarsCalcActivity extends AppCompatActivity {
 
@@ -43,6 +46,8 @@ public class BusbarsCalcActivity extends AppCompatActivity {
         int lenght = mPreferences.getInt(LENGTH_BUSBAR, 1); // длина шины
         int width = mPreferences.getInt(WIDTH_BUSBAR, 50); // ширина шины  шины
         int thickness = mPreferences.getInt(THICKNESS_BUSBAR, 6); //толшина шины
+
+
 
 
 
