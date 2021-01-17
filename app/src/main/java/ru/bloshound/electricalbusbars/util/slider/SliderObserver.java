@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.util;
+package ru.bloshound.electricalbusbars.util.slider;
 
 import android.text.TextUtils;
 
@@ -6,11 +6,11 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.material.slider.Slider;
 
-public class SlliderObserver implements Observer<String> {
+public class SliderObserver implements Observer<String> {
 
     Slider slider;
 
-    public SlliderObserver(Slider slider){
+    public SliderObserver(Slider slider){
         this.slider = slider;
     }
 

@@ -3,7 +3,15 @@ package ru.bloshound.electricalbusbars.util;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-public abstract class AfterTextChangeWatcher implements TextWatcher {
+import androidx.lifecycle.MutableLiveData;
+
+public class AfterTextChangeWatcher implements TextWatcher {
+
+    MutableLiveData<String> liveData;
+
+    public AfterTextChangeWatcher(MutableLiveData<String> liveData) {
+        this.liveData = liveData;
+    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -16,5 +24,7 @@ public abstract class AfterTextChangeWatcher implements TextWatcher {
     }
 
     @Override
-    public abstract void afterTextChanged(Editable s);
+    public void afterTextChanged(Editable s){
+        liveData.setValue(s.toString());
+    }
 }
