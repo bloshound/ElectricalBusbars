@@ -5,20 +5,34 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import ru.bloshound.electricalbusbars.repo.Busbar;
+
 public class BusbarViewModel extends ViewModel {
 
     private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
     private LiveData<String> mText = Transformations.map(mIndex, input -> "Hello world from section: " + input);
 
-    private MutableLiveData<CharSequence> mQuantity = new MutableLiveData<>();
-    private LiveData<Integer> mQuantityNumber =  Transformations.map(mQuantity, input -> Integer.parseInt(mQuantity.toString()));
+    private MutableLiveData<Busbar> mBusbar = new MutableLiveData<>();
+
+    private MutableLiveData<String> mQuantityString = new MutableLiveData<>();
 
 
-
-
-    public void setQuantity(CharSequence quantity) {
-        mQuantity.setValue(quantity);
+    public void setBusBar(Busbar busbar) {
+        mBusbar.setValue(busbar);
     }
+
+    public MutableLiveData<Busbar> getBusbar() {
+        return mBusbar;
+    }
+
+    public void setQuantity(String quantity) {
+        mQuantityString.setValue(quantity);
+    }
+
+    public MutableLiveData<String> getQuantity() {
+        return mQuantityString;
+    }
+
 
     public void setIndex(int index) {
         mIndex.setValue(index);

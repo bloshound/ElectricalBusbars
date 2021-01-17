@@ -2,6 +2,7 @@ package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.slider.Slider;
 
 import ru.bloshound.electricalbusbars.R;
+import ru.bloshound.electricalbusbars.repo.Busbar;
+import ru.bloshound.electricalbusbars.repo.CopperBusbar;
 import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
-import ru.bloshound.electricalbusbars.util.VariableValueWatcher;
+import ru.bloshound.electricalbusbars.util.LiveDataTextWatcher;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -25,7 +30,7 @@ public class BusbarHolderFragment extends Fragment {
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-
+    private static final String ARG_BUSBAR = "busbar";
 
 
     private BusbarViewModel busbarViewModel;
@@ -34,7 +39,7 @@ public class BusbarHolderFragment extends Fragment {
         BusbarHolderFragment fragment = new BusbarHolderFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
-
+        bundle.putSerializable(ARG_BUSBAR, new CopperBusbar(4, 40, 1000)); // ЗАменить на получениме busbur мз preferences
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -44,14 +49,13 @@ public class BusbarHolderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         busbarViewModel = new ViewModelProvider(this).get(BusbarViewModel.class);
         int index = 1;
+        Busbar busbar = null; // здесь должен создаваться новый басбар
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
+            busbar = (Busbar) getArguments().getSerializable(ARG_BUSBAR);
         }
         busbarViewModel.setIndex(index);
-
-
-
-
+        busbarViewModel.setBusBar(busbar);
     }
 
     @Override
@@ -60,6 +64,7 @@ public class BusbarHolderFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+
 
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
 
@@ -73,18 +78,36 @@ public class BusbarHolderFragment extends Fragment {
         EditText widthEd = (EditText) root.findViewById(R.id.ed_width);
         EditText thicknessEd = (EditText) root.findViewById(R.id.ed_thickness);
 
+        Observer<String> qantityObserver = s -> {
+            if (TextUtils.isDigitsOnly(s) && !TextUtils.isEmpty(s)) {
+                int i = Integer.parseInt(s);
+                if (i >= quantitySlider.getValueFrom() && i <= quantitySlider.getValueTo())
+                    quantitySlider.setValue(i);
+            }
+        };
+
+        Observer<Busbar> busbarLengthObserver = s -> {
+            int i = s.getLength();
+            String sl = String.valueOf(i);
+            if (TextUtils.isDigitsOnly(sl) && !TextUtils.isEmpty(sl)) {
+                if (i >= lengthSlider.getValueFrom() && i <= lengthSlider.getValueTo())
+                    lengthSlider.setValue(i);
+            }
+        };
 
         quantityEd.setFilters(new InputFilter[]{new InputFilterMinMax(1, 10)});
+        MutableLiveData<String> quantityLD = busbarViewModel.getQuantity();
+        quantityLD.observe(this, qantityObserver);
+        quantityEd.addTextChangedListener(new LiveDataTextWatcher(quantityLD));
+
 
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
+
         return root;
 
     }
-
-
-
 
 
 }
