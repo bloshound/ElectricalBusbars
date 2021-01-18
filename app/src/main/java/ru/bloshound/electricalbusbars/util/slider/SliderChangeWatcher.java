@@ -10,6 +10,8 @@ public class SliderChangeWatcher implements TextWatcher {
 
     Slider slider;
 
+
+
     public SliderChangeWatcher(Slider slider) {
         this.slider = slider;
     }

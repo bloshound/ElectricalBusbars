@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.repo;
+package ru.bloshound.electricalbusbars.model;
 
 public class CopperBusbar extends Busbar {
 

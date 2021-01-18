@@ -12,8 +12,6 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import ru.bloshound.electricalbusbars.repo.Busbar;
-import ru.bloshound.electricalbusbars.repo.CopperBusbar;
 import ru.bloshound.electricalbusbars.ui.fragment.SectionsPagerAdapter;
 
 public class BusbarsCalcActivity extends AppCompatActivity {
