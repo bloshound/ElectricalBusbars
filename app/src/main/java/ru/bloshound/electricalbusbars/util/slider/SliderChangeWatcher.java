@@ -6,6 +6,8 @@ import android.text.TextWatcher;
 
 import com.google.android.material.slider.Slider;
 
+import androidx.annotation.NonNull;
+
 public class SliderChangeWatcher implements TextWatcher {
 
     Slider slider;
@@ -27,7 +29,7 @@ public class SliderChangeWatcher implements TextWatcher {
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(@NonNull Editable s) {
 
         if (TextUtils.isDigitsOnly(s) && !TextUtils.isEmpty(s)) {
             int i = Integer.parseInt(s.toString());
