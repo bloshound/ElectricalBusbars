@@ -3,11 +3,14 @@ package ru.bloshound.electricalbusbars.util.slider;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-public class VarTextWatcher implements TextWatcher {
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-    CharSequence sharS;
+public class LiveDataChangeTextWatcher implements TextWatcher {
 
-    public VarTextWatcher(CharSequence sharS) {
+    MutableLiveData<CharSequence> sharS;
+
+    public LiveDataChangeTextWatcher(MutableLiveData<CharSequence> sharS) {
         this.sharS = sharS;
     }
 
@@ -23,6 +26,7 @@ public class VarTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        sharS = s.toString();
+        sharS.setValue(s.toString());
+        System.out.println(s);
     }
 }

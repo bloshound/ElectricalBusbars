@@ -2,31 +2,27 @@ package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.InputFilter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.slider.Slider;
 
-import org.w3c.dom.ls.LSOutput;
-
 import ru.bloshound.electricalbusbars.R;
-import ru.bloshound.electricalbusbars.model.AluminiumBusbar;
 import ru.bloshound.electricalbusbars.model.Busbar;
 import ru.bloshound.electricalbusbars.model.CopperBusbar;
-import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
-import ru.bloshound.electricalbusbars.util.slider.SliderChangeWatcher;
-import ru.bloshound.electricalbusbars.util.slider.VarTextWatcher;
+
+import ru.bloshound.electricalbusbars.util.slider.LiveDataChangeTextWatcher;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -102,25 +98,18 @@ public class BusbarHolderFragment extends Fragment {
         EditText widthEditText = (EditText) root.findViewById(R.id.ed_width);
         EditText thicknessEditText = (EditText) root.findViewById(R.id.ed_thickness);
 
-        String s = "";
-        quantityEditText.addTextChangedListener(new VarTextWatcher(s));
+        MutableLiveData<CharSequence> lvs = new MutableLiveData<>();
+        quantityEditText.addTextChangedListener(new LiveDataChangeTextWatcher(lvs));
 
 
         Busbar busbar = (Busbar) busbarViewModel.getBusbar().getValue();
-        busbar.setWidth(Integer.parseInt(s));
-        busbarLiveData.setValue(busbar);
-        busbarLiveData.observe(new Observer<>())
-
-
-
-
-
-
+        busbar.setWidth(Integer.parseInt(s1));
+        busbarLiveData.setValue(busbar); // проверить строчку
+        busbarLiveData.observe(this, busbar1 -> System.out.println(busbar1));
 
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
-
     }
 }
