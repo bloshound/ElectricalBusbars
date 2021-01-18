@@ -9,17 +9,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.slider.Slider;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.google.android.material.slider.Slider;
-
 import ru.bloshound.electricalbusbars.R;
 import ru.bloshound.electricalbusbars.repo.Busbar;
 import ru.bloshound.electricalbusbars.repo.CopperBusbar;
-import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
+import ru.bloshound.electricalbusbars.util.textedit.InputFilterMinMax;
 import ru.bloshound.electricalbusbars.util.slider.SliderChangeWatcher;
 
 /**
@@ -30,8 +29,8 @@ public class BusbarHolderFragment extends Fragment {
     private int minValue;
     private int maxQuantityValue;
     private int maxLengthValue;
-    private int maxThicknessValue;
     private int maxWidthValue;
+    private int maxThicknessValue;
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -56,8 +55,8 @@ public class BusbarHolderFragment extends Fragment {
         minValue = getResources().getInteger(R.integer.min_value);
         maxQuantityValue = getResources().getInteger(R.integer.quantity_max_value);
         maxLengthValue = getResources().getInteger(R.integer.length_max_value);
+        maxWidthValue = getResources().getInteger(R.integer.width_max_value);
         maxThicknessValue = getResources().getInteger(R.integer.thickness_max_value);
-        maxWidthValue = getResources().getInteger(R.integer.thickness_max_value);
     }
 
     @Override
@@ -102,16 +101,26 @@ public class BusbarHolderFragment extends Fragment {
         EditText widthEditText = (EditText) root.findViewById(R.id.ed_width);
         EditText thicknessEditText = (EditText) root.findViewById(R.id.ed_thickness);
 
-       quantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxQuantityValue)});
-       quantityEditText.addTextChangedListener(new SliderChangeWatcher(quantitySlider));
+        quantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxQuantityValue)});
+        quantityEditText.addTextChangedListener(new SliderChangeWatcher(quantitySlider));
 
-       lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxLengthValue)});
-       lengthEditText.addTextChangedListener(new SliderChangeWatcher(lengthSlider));
+        lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxLengthValue)});
+        lengthEditText.addTextChangedListener(new SliderChangeWatcher(lengthSlider));
+
+        widthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxWidthValue)});
+        widthEditText.addTextChangedListener(new SliderChangeWatcher(widthSlider));
+
+        thicknessEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxThicknessValue)});
+        thicknessEditText.addTextChangedListener(new SliderChangeWatcher(thicknessSlider));
+
+        quantitySlider.addOnChangeListener ((slider, value, fromUser) -> {
+            System.out.println(value);
+            int i = (int) value;
+            quantityEditText.setText(String.valueOf(i));
+        });
 
 
-
-
-        busbarViewModel.getText().observe(this, s -> textView.setText(s));
+                busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
 
     }

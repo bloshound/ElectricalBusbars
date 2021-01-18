@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.util;
+package ru.bloshound.electricalbusbars.util.textedit;
 
 import android.text.InputFilter;
 import android.text.Spanned;
