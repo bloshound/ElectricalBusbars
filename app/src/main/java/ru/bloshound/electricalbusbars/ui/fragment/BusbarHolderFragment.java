@@ -98,16 +98,12 @@ public class BusbarHolderFragment extends Fragment {
 
         lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
         lengthEditText.addTextChangedListener(new ModelChangeTextWatcher(busbarMutableLiveData, ModelChangeTextWatcher.Variable.Length));
-        lengthSlider.addOnChangeListener((slider, value, fromUser) -> {
-            Busbar busbar = busbarLiveData.getValue();
-            busbar.setLength((int) value);
-            busbarLiveData.setValue(busbar);
-        });
+
 
         busbarMutableLiveData.setValue(new CopperBusbar(100, 1000, 10));
         busbarMutableLiveData.observe(this, busbar -> {
             lengthSlider.setValue(busbar.getLength());
-            lengthEditText.setText(busbar.getLength());
+
         });
 
 
