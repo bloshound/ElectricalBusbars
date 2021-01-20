@@ -2,27 +2,24 @@ package ru.bloshound.electricalbusbars.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import com.google.android.material.slider.Slider;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.google.android.material.slider.Slider;
-
 import ru.bloshound.electricalbusbars.R;
 import ru.bloshound.electricalbusbars.model.Busbar;
 import ru.bloshound.electricalbusbars.model.CopperBusbar;
-
-import ru.bloshound.electricalbusbars.util.slider.LiveDataChangeTextWatcher;
+import ru.bloshound.electricalbusbars.util.slider.ModelChangeTextWatcher;
+import ru.bloshound.electricalbusbars.util.textedit.InputFilterMinMax;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -84,8 +81,6 @@ public class BusbarHolderFragment extends Fragment {
         MutableLiveData<Busbar> busbarLiveData = busbarViewModel.getBusbar();
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-
-
         final TextView textView = (TextView) root.findViewById(R.id.section_label);
 
         Slider quantitySlider = (Slider) root.findViewById(R.id.slider_quantity);
@@ -98,15 +93,22 @@ public class BusbarHolderFragment extends Fragment {
         EditText widthEditText = (EditText) root.findViewById(R.id.ed_width);
         EditText thicknessEditText = (EditText) root.findViewById(R.id.ed_thickness);
 
-        MutableLiveData<CharSequence> lvs = new MutableLiveData<>();
-        quantityEditText.addTextChangedListener(new LiveDataChangeTextWatcher(lvs));
 
+        MutableLiveData<Busbar> busbarMutableLiveData = busbarViewModel.getBusbar();
 
-        Busbar busbar = (Busbar) busbarViewModel.getBusbar().getValue();
-        busbar.setWidth(Integer.parseInt(s1));
-        busbarLiveData.setValue(busbar); // проверить строчку
-        busbarLiveData.observe(this, busbar1 -> System.out.println(busbar1));
+        lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
+        lengthEditText.addTextChangedListener(new ModelChangeTextWatcher(busbarMutableLiveData, ModelChangeTextWatcher.Variable.Length));
+        lengthSlider.addOnChangeListener((slider, value, fromUser) -> {
+            Busbar busbar = busbarLiveData.getValue();
+            busbar.setLength((int) value);
+            busbarLiveData.setValue(busbar);
+        });
 
+        busbarMutableLiveData.setValue(new CopperBusbar(100, 1000, 10));
+        busbarMutableLiveData.observe(this, busbar -> {
+            lengthSlider.setValue(busbar.getLength());
+            lengthEditText.setText(busbar.getLength());
+        });
 
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));

@@ -14,8 +14,6 @@ public class BusbarViewModel extends ViewModel {
 
     private MutableLiveData<Busbar> mBusbar = new MutableLiveData<>();
 
-    private MutableLiveData<String> mQuantityM = new MutableLiveData<>();
-
     public void setBusbar(Busbar busbar){
         mBusbar.setValue(busbar);
     }

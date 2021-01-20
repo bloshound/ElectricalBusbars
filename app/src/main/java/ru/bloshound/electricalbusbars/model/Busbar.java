@@ -6,20 +6,26 @@ public abstract class Busbar implements Serializable {
 
     private String material;
     private int density;
-
     private int width;
     private int thickness;
-    private final int section;
-
     private int length;
+
+
 
     public Busbar(String material, int density, int width, int thickness, int length) {
         this.material = material;
         this.density = density;
         this.width = width;
         this.thickness = thickness;
-        this.section = thickness * width;
         this.length = length;
+    }
+
+    public Busbar(Busbar busbar){
+        this.material = busbar.material;
+        this.density = busbar.density;
+        this.width = busbar.width;
+        this.length = busbar.length;
+        this.thickness = busbar.thickness;
     }
 
     public void setDensity(int density) {
@@ -54,10 +60,6 @@ public abstract class Busbar implements Serializable {
         return thickness;
     }
 
-    public int getSection() {
-        return section;
-    }
-
     public int getLength() {
         return length;
     }
@@ -69,7 +71,6 @@ public abstract class Busbar implements Serializable {
                 ", density=" + density +
                 ", width=" + width +
                 ", thickness=" + thickness +
-                ", section=" + section +
                 ", length=" + length +
                 '}';
     }
