@@ -60,8 +60,6 @@ public class ModelChangeTextWatcher implements TextWatcher {
         }
 
         busbarLiveData.setValue(busbar);
-
-
     }
 
 

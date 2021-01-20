@@ -63,7 +63,7 @@ public class BusbarHolderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         busbarViewModel = new ViewModelProvider(this).get(BusbarViewModel.class);
-        int index = 1;
+        int index = 5;
         Busbar busbar = null; // здесь должен создаваться новый басбар
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -96,8 +96,17 @@ public class BusbarHolderFragment extends Fragment {
 
         MutableLiveData<Busbar> busbarMutableLiveData = busbarViewModel.getBusbar();
 
-        lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
+      //  lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
+        widthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
         lengthEditText.addTextChangedListener(new ModelChangeTextWatcher(busbarMutableLiveData, ModelChangeTextWatcher.Variable.Length));
+
+        lengthSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if(slider.getId() == R.id.slider_length) System.out.println(value);
+            String s = String.valueOf((int)value);
+            lengthEditText.setFilters(new InputFilter[]{});
+            lengthEditText.setText(s);
+            lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(1, 1000)});
+        });
 
 
         busbarMutableLiveData.setValue(new CopperBusbar(100, 1000, 10));
@@ -109,5 +118,6 @@ public class BusbarHolderFragment extends Fragment {
 
         busbarViewModel.getText().observe(this, s -> textView.setText(s));
         return root;
+
     }
 }
