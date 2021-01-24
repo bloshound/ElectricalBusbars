@@ -1,4 +1,4 @@
-package ru.bloshound.electricalbusbars.ui;
+package ru.bloshound.electricalbusbars;
 
 import androidx.appcompat.app.AppCompatActivity;
 
