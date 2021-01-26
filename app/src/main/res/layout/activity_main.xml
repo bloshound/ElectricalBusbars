@@ -13,29 +13,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/label_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Текст"
+            android:textSize="20sp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/label_quantity"
+
+        <TableRow>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Текст"
-                android:textSize="20dp" />
+                android:layout_weight="4"
+                android:stepSize="@integer/step_size"
+                android:valueFrom="@integer/min_value"
+                android:valueTo="@integer/quantity_max_value"
+                />
 
-            <TableRow>
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/slider_quantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_quantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="numberDecimal" />
-            </TableRow>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="number" />
+        </TableRow>
 
 
     </TableLayout>
