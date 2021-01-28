@@ -4,18 +4,26 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.widget.EditText;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.slider.Slider;
 
+import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
+import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
+
 public class MainActivity extends AppCompatActivity {
 
+    EditText mQuantity_ed;
+    Slider mQuantity_slider;
 
-    EditText quantuty_ed;
-    Slider quantity_slider;
+
+    MinMaxEditTextWatcher mQuantityMinMaxInput;
+    SliderAfterChangeTextWatcher mQuantityInputWatcher;
+
+    Slider.OnChangeListener mQuantiutySliderListner;
 
 
     @Override
@@ -23,84 +31,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Resources resources = getResources();
+        mQuantity_ed = findViewById(R.id.ed_quantity);
+        mQuantity_slider = findViewById(R.id.slider_quantity);
 
-        quantuty_ed = findViewById(R.id.ed_quantity);
-        quantity_slider = findViewById(R.id.slider_quantity);
+        mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
+                getResources().getInteger(R.integer.quantity_max_value));
+        mQuantityInputWatcher = new SliderAfterChangeTextWatcher(mQuantity_slider);
 
-        quantuty_ed.addTextChangedListener(getMinMaxEditTextWatcher
-                (resources.getInteger(R.integer.min_value),
-                        resources.getInteger(R.integer.quantity_max_value)));
-
+        mQuantiutySliderListner = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
+        mQuantity_ed.addTextChangedListener(mQuantityInputWatcher);
+
+        mQuantity_slider.addOnChangeListener(mQuantiutySliderListner);
+
     }
 
+     static class SliderAfterChangeTextWatcher extends AfterChangeTextWatcher {
+        Slider slider;
 
-    private TextWatcher getMinMaxEditTextWatcher(int min, int max) {
-        TextWatcher textWatcher = new TextWatcher() {
+        public SliderAfterChangeTextWatcher(Slider slider) {
+            this.slider = slider;
+        }
 
-            CharSequence ch = "";
-
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!TextUtils.isEmpty(s) && TextUtils.isDigitsOnly(s)) {
+                int value = Integer.parseInt(s.toString());
+                slider.setValue(value);
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s) && TextUtils.isDigitsOnly(s)) {
-                    int value = Integer.parseInt(s.toString());
-
-                    if (value > max) {
-                        s.replace(0, s.length(), String.valueOf(max));
-                    }
-                    if (value < min) {
-                       s.replace(0, s.length(), String.valueOf(min));
-                    }
-
-
-
-
-
-                }
-
-
-            }
-        };
-        return textWatcher;
+        }
     }
-
-
-    private TextWatcher getSliderSetValueTextWatcher(Slider slider) {
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-
-            }
-        };
-        return textWatcher;
-    }
-
 }
