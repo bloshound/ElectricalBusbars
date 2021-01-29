@@ -1,6 +1,5 @@
 package ru.bloshound.electricalbusbars;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,25 +19,26 @@ public class MainActivity extends AppCompatActivity {
     Slider mQuantity_slider;
 
 
+
     MinMaxEditTextWatcher mQuantityMinMaxInput;
     SliderAfterChangeTextWatcher mQuantityInputWatcher;
-
-    Slider.OnChangeListener mQuantiutySliderListner;
+    Slider.OnChangeListener mQuantitySliderListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_main);
 
         mQuantity_ed = findViewById(R.id.ed_quantity);
         mQuantity_slider = findViewById(R.id.slider_quantity);
 
+
+
         mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.quantity_max_value));
         mQuantityInputWatcher = new SliderAfterChangeTextWatcher(mQuantity_slider);
-
-        mQuantiutySliderListner = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
+        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
 
     }
 
@@ -48,12 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
         mQuantity_ed.addTextChangedListener(mQuantityInputWatcher);
-
-        mQuantity_slider.addOnChangeListener(mQuantiutySliderListner);
+        mQuantity_slider.addOnChangeListener(mQuantitySliderListener);
 
     }
 
-     static class SliderAfterChangeTextWatcher extends AfterChangeTextWatcher {
+    private static class SliderAfterChangeTextWatcher extends AfterChangeTextWatcher {
         Slider slider;
 
         public SliderAfterChangeTextWatcher(Slider slider) {

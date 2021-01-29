@@ -3,9 +3,16 @@
 
     <integer name="min_value">1</integer>
     <integer name="step_size">1</integer>
-    <integer name="quantity_max_value">1000</integer>
+    <integer name="quantity_max_value">10</integer>
     <integer name="length_max_value">1000</integer>
     <integer name="width_max_value">150</integer>
     <integer name="thickness_max_value">20</integer>
+
+    <integer name="default_quantity">3</integer>
+
+    <integer name="default_copper_density">8270</integer>
+    <integer name="default_length">100</integer>
+    <integer name="default_width">50</integer>
+    <integer name="default_thickness">60</integer>
 
 </resources>

@@ -1,12 +1,20 @@
 package ru.bloshound.electricalbusbars;
 
-public abstract class AbstractBusBar {
+public abstract class Busbar {
 
     String material;
     double density;
     int length;
     int width;
     int thickness;
+
+    public Busbar(String material, double density, int length, int width, int thickness) {
+        this.material = material;
+        this.density = density;
+        this.length = length;
+        this.width = width;
+        this.thickness = thickness;
+    }
 
     public String getMaterial() {
         return material;
