@@ -2,20 +2,22 @@ package ru.bloshound.electricalbusbars;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
     public static final String BUSBAR_KEY = "busbar_key";
-    public static final Type BUSBAR_TYPE =  new TypeToken<Set<Busbar>>(){
+    public static final Type BUSBAR_TYPE = new TypeToken<Set<Busbar>>() {
 
     }.getType();
 
@@ -40,14 +42,31 @@ public class SharedPreferencesHelper {
 
 
     public Set<Busbar> getSavedBusbars() {
-        Set<Busbar> initBusbars = new HashSet<>(){{
-            add(new Busbar("copper", 8270,
-                    context.getResources().getInteger(R.integer.min_value), 50,
-                    6) {
-            })
-        }}
+        Set<Busbar> initBusbars = new HashSet<Busbar>() {{
+            Resources resources = context.getResources();
+            add(new Busbar("Copper", 8930,
+                    resources.getInteger(R.integer.default_length), resources.getInteger(R.integer.default_width),
+                    resources.getInteger(R.integer.default_thickness)) {
+            });
+
+            add(new Busbar("Aluminium", 2710,
+                    resources.getInteger(R.integer.default_length), resources.getInteger(R.integer.default_width),
+                    resources.getInteger(R.integer.default_thickness)) {
+            });
+
+        }};
         Set<Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
-        return busbars = null
+        return busbars == null ? initBusbars : busbars;
+    }
+
+
+    public String[] getMaterials() {
+        List<String> listOfMaterials = new ArrayList<>();
+        for (Busbar b: getSavedBusbars()) {
+            listOfMaterials.add(b.getMaterial());
+        }
+        return listOfMaterials.toArray(new String[0]);
+
     }
 
 

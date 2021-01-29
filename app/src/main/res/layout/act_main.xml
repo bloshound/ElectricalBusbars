@@ -7,9 +7,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <AutoCompleteTextView
+        android:id="@+id/actv_chosen_material"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:completionThreshold="0"
+        android:hint="rgdfg" />
 
     <TextView
         android:id="@+id/label_quantity"
@@ -34,7 +37,7 @@
             android:valueFrom="@integer/min_value"
             android:valueTo="@integer/quantity_max_value" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/ed_quantity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,7 +68,7 @@
             android:valueFrom="@integer/min_value"
             android:valueTo="@integer/length_max_value" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/ed_length"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -96,7 +99,7 @@
             android:valueFrom="@integer/min_value"
             android:valueTo="@integer/length_max_value" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/ed_width"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -128,7 +131,7 @@
             android:valueFrom="@integer/min_value"
             android:valueTo="@integer/length_max_value" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/ed_thickness"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -139,8 +142,7 @@
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save and Calculate"
         android:layout_gravity="center"
-        />
+        android:text="Save and Calculate" />
 
 </LinearLayout>

@@ -3,8 +3,10 @@ package ru.bloshound.electricalbusbars;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,9 +17,12 @@ import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SharedPreferencesHelper mSharedPreferencesHelper;
+    ArrayAdapter<String> mMaterialAdapter;
+
+    private AutoCompleteTextView mMaterail_autotv;
     EditText mQuantity_ed;
     Slider mQuantity_slider;
-
 
 
     MinMaxEditTextWatcher mQuantityMinMaxInput;
@@ -25,13 +30,26 @@ public class MainActivity extends AppCompatActivity {
     Slider.OnChangeListener mQuantitySliderListener;
 
 
+    private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
+        if (hasFocus) mMaterail_autotv.showDropDown();
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
 
+        mSharedPreferencesHelper = new SharedPreferencesHelper(this);
+
+        mMaterail_autotv = findViewById(R.id.actv_chosen_material);
         mQuantity_ed = findViewById(R.id.ed_quantity);
         mQuantity_slider = findViewById(R.id.slider_quantity);
+
+        mMaterialAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line,
+                mSharedPreferencesHelper.getMaterials());
+        mMaterail_autotv.setAdapter(mMaterialAdapter);
 
 
 
@@ -45,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        mMaterail_autotv.setOnFocusChangeListener(mOnMaterialFocusChangeListener);
+
+
 
         mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
         mQuantity_ed.addTextChangedListener(mQuantityInputWatcher);
