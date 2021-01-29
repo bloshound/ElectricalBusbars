@@ -10,7 +10,7 @@
 
     <integer name="default_quantity">3</integer>
 
-    <integer name="default_copper_density">8270</integer>
+    <integer name="default_copper_density">8930</integer>
     <integer name="default_length">100</integer>
     <integer name="default_width">50</integer>
     <integer name="default_thickness">60</integer>
