@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Electrical Busbars</string>
 
+
+    <string name="select_quantity_label">Select the quantity of busbars:</string>
+    <string name="select_length_label">Select length of busbars:</string>
+    <string name="select_width_label">Select width of busbars:</string>
+    <string name="select_thickness_label">Select thickness of busbars:</string>
+    <string name="save_and_calculate">Save and Calculate</string>
+
+
     <integer name="min_value">1</integer>
     <integer name="step_size">1</integer>
     <integer name="quantity_max_value">10</integer>
@@ -8,8 +16,8 @@
     <integer name="width_max_value">150</integer>
     <integer name="thickness_max_value">20</integer>
 
-    <integer name="default_quantity">3</integer>
 
+    <integer name="default_quantity">3</integer>
     <integer name="default_length">100</integer>
     <integer name="default_width">50</integer>
     <integer name="default_thickness">60</integer>
