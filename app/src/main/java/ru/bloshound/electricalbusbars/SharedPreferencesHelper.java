@@ -2,22 +2,21 @@ package ru.bloshound.electricalbusbars;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 
 public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
     public static final String BUSBAR_KEY = "busbar_key";
-    public static final Type BUSBAR_TYPE = new TypeToken<Set<Busbar>>() {
+    public static final Type BUSBAR_TYPE = new TypeToken<Map<String, Busbar>>() {
 
     }.getType();
 
@@ -41,30 +40,33 @@ public class SharedPreferencesHelper {
     }
 
 
-    public Set<Busbar> getSavedBusbars() {
-        Set<Busbar> initBusbars = new HashSet<Busbar>() {{
-            Resources resources = context.getResources();
-            add(new Busbar("Copper", 8930,
-                    resources.getInteger(R.integer.default_length), resources.getInteger(R.integer.default_width),
-                    resources.getInteger(R.integer.default_thickness)) {
-            });
+    public HashMap<String, Busbar> getSavedBusbars() {
+        HashMap<String, Busbar> initBusbars = new HashMap<>();
+        Busbar copperBusbar = new Busbar("copper", 8970, context.getResources().getInteger(R.integer.default_length),
+                context.getResources().getInteger(R.integer.default_width),
+                context.getResources().getInteger(R.integer.default_thickness)) {
+        };
 
-            add(new Busbar("Aluminium", 2710,
-                    resources.getInteger(R.integer.default_length), resources.getInteger(R.integer.default_width),
-                    resources.getInteger(R.integer.default_thickness)) {
-            });
+        Busbar aluminiumBusbar = new Busbar("aluminium", 2710, context.getResources().getInteger(R.integer.default_length),
+                context.getResources().getInteger(R.integer.default_width),
+                context.getResources().getInteger(R.integer.default_thickness)) {
+        };
 
-        }};
-        Set<Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
+        initBusbars.put(copperBusbar.getMaterial(), copperBusbar);
+        initBusbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
+
+        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
         return busbars == null ? initBusbars : busbars;
     }
 
 
     public String[] getMaterials() {
         List<String> listOfMaterials = new ArrayList<>();
-        for (Busbar b: getSavedBusbars()) {
-            listOfMaterials.add(b.getMaterial());
+
+        for (Map.Entry<String, Busbar> pair : getSavedBusbars().entrySet()) {
+            listOfMaterials.add(pair.getKey());
         }
+
         return listOfMaterials.toArray(new String[0]);
 
     }

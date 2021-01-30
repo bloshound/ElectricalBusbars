@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -72,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
         mQuantity_ed.addTextChangedListener(mQuantityInputWatcher);
         mQuantity_slider.addOnChangeListener(mQuantitySliderListener);
 
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus) Toast.makeText(this, "Focus", Toast.LENGTH_SHORT);
     }
 
     private static class SliderAfterChangeTextWatcher extends AfterChangeTextWatcher {
