@@ -101,7 +101,7 @@
             android:layout_weight="1"
             android:stepSize="@integer/step_size"
             android:valueFrom="@integer/min_value"
-            android:valueTo="@integer/length_max_value" />
+            android:valueTo="@integer/width_max_value" />
 
         <EditText
             android:id="@+id/ed_width"
@@ -134,7 +134,7 @@
             android:layout_weight="1"
             android:stepSize="@integer/step_size"
             android:valueFrom="@integer/min_value"
-            android:valueTo="@integer/length_max_value" />
+            android:valueTo="@integer/thickness_max_value" />
 
         <EditText
             android:id="@+id/ed_thickness"
