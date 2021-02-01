@@ -59,6 +59,13 @@ public class SharedPreferencesHelper {
         return busbars == null ? initBusbars : busbars;
     }
 
+    public boolean putBusbar(Busbar busbar){
+        HashMap<String, Busbar> busbars = getSavedBusbars();
+        busbars.put(busbar.getMaterial(), busbar);
+        mSharedPreferences.edit().putString(BUSBAR_KEY,mGson.toJson(busbars, BUSBAR_TYPE)).apply();
+        return true;
+    }
+
 
     public String[] getMaterials() {
         List<String> listOfMaterials = new ArrayList<>();

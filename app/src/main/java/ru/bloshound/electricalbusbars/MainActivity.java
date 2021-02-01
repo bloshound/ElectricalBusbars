@@ -4,10 +4,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,9 +22,10 @@ import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferencesHelper mSharedPreferencesHelper;
-    private ArrayAdapter<String> mMaterialAdapter;
 
+    private ArrayAdapter<String> mMaterialAdapter;
     private AutoCompleteTextView mMaterail_autotv;
+
     private EditText mQuantity_ed;
     private EditText mLength_ed;
     private EditText mWidth_ed;
@@ -108,6 +112,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setWatchersAndListeners();
+    }
+
+    @Override
+    protected void onPause() {
+
+        String material;
+        double density;
+        int length, width, thickness;
+
+        if (TextUtils.isEmpty(mMaterail_autotv.getText()))
+            Toast.makeText(this, "material not chosen", Toast.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(mLength_ed.getText()))
+            Toast.makeText(this, "length not selected", Toast.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(mWidth_ed.getText()))
+            Toast.makeText(this, "width not selected", Toast.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(mThickness_ed.getText()))
+            Toast.makeText(this, "thickness not selected", Toast.LENGTH_SHORT).show();
+
+
+        super.onPause();
+
+
     }
 
 
