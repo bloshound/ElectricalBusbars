@@ -17,7 +17,6 @@ public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
     public static final String BUSBAR_KEY = "busbar_key";
     public static final Type BUSBAR_TYPE = new TypeToken<Map<String, Busbar>>() {
-
     }.getType();
 
 
@@ -42,12 +41,12 @@ public class SharedPreferencesHelper {
 
     public HashMap<String, Busbar> getSavedBusbars() {
         HashMap<String, Busbar> initBusbars = new HashMap<>();
-        Busbar copperBusbar = new Busbar("copper", 8970, context.getResources().getInteger(R.integer.default_length),
+        Busbar copperBusbar = new Busbar("copper", context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
                 context.getResources().getInteger(R.integer.default_width),
                 context.getResources().getInteger(R.integer.default_thickness)) {
         };
 
-        Busbar aluminiumBusbar = new Busbar("aluminium", 2710, context.getResources().getInteger(R.integer.default_length),
+        Busbar aluminiumBusbar = new Busbar("aluminium", context.getResources().getInteger(R.integer.aluminium_density), context.getResources().getInteger(R.integer.default_length),
                 context.getResources().getInteger(R.integer.default_width),
                 context.getResources().getInteger(R.integer.default_thickness)) {
         };
@@ -59,10 +58,10 @@ public class SharedPreferencesHelper {
         return busbars == null ? initBusbars : busbars;
     }
 
-    public boolean putBusbar(Busbar busbar){
+    public boolean putBusbar(Busbar busbar) {
         HashMap<String, Busbar> busbars = getSavedBusbars();
         busbars.put(busbar.getMaterial(), busbar);
-        mSharedPreferences.edit().putString(BUSBAR_KEY,mGson.toJson(busbars, BUSBAR_TYPE)).apply();
+        mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
         return true;
     }
 
