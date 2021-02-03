@@ -9,10 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.slider.Slider;
 
+import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
 import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
 import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
 
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPreferencesHelper.getMaterials());
         mMaterail_autotv.setAdapter(mMaterialAdapter);
 
+        initFromPreferences();
+
 
         mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.quantity_max_value));
@@ -108,6 +111,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setWatchersAndListeners();
+    }
+
+    private void initFromPreferences() {
+
+        if (mSharedPreferencesHelper.getLastBusbar() == null) {
+            mMaterail_autotv.setText(Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get("copper")).getMaterial());
+            int initLength = Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get("copper")).getLength();
+            mLength_ed.setText(String.valueOf(initLength));
+            mLength_slider.setValue(initLength);
+        }
+
     }
 
 

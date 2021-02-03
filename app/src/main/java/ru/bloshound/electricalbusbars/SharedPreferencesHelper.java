@@ -32,6 +32,16 @@ public class SharedPreferencesHelper {
     private Gson mGson = new Gson();
     private Context context;
 
+    private Busbar lastBusbar;
+
+    public void setLastBusbar(){
+
+    }
+
+    public Busbar getLastBusbar() {
+        return null;
+    }
+
 
     public SharedPreferencesHelper(Context context) {
         this.context = context;

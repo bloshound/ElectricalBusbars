@@ -1,0 +1,115 @@
+Index: app/src/main/java/ru/bloshound/electricalbusbars/ui/fragment/BusbarHolderFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/bloshound/electricalbusbars/ui/fragment/BusbarHolderFragment.java	(revision 04f2532580cd37d64b07926440046a5c4d67a189)
++++ app/src/main/java/ru/bloshound/electricalbusbars/ui/fragment/BusbarHolderFragment.java	(date 1610975887246)
+@@ -9,17 +9,16 @@
+ import android.widget.EditText;
+ import android.widget.TextView;
+ 
++import com.google.android.material.slider.Slider;
++
+ import androidx.annotation.NonNull;
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.MutableLiveData;
+ import androidx.lifecycle.ViewModelProvider;
+-
+-import com.google.android.material.slider.Slider;
+-
+ import ru.bloshound.electricalbusbars.R;
+ import ru.bloshound.electricalbusbars.repo.Busbar;
+ import ru.bloshound.electricalbusbars.repo.CopperBusbar;
+-import ru.bloshound.electricalbusbars.util.InputFilterMinMax;
++import ru.bloshound.electricalbusbars.util.textedit.InputFilterMinMax;
+ import ru.bloshound.electricalbusbars.util.slider.SliderChangeWatcher;
+ 
+ /**
+@@ -30,8 +29,8 @@
+     private int minValue;
+     private int maxQuantityValue;
+     private int maxLengthValue;
+-    private int maxThicknessValue;
+     private int maxWidthValue;
++    private int maxThicknessValue;
+ 
+ 
+     private static final String ARG_SECTION_NUMBER = "section_number";
+@@ -56,8 +55,8 @@
+         minValue = getResources().getInteger(R.integer.min_value);
+         maxQuantityValue = getResources().getInteger(R.integer.quantity_max_value);
+         maxLengthValue = getResources().getInteger(R.integer.length_max_value);
++        maxWidthValue = getResources().getInteger(R.integer.width_max_value);
+         maxThicknessValue = getResources().getInteger(R.integer.thickness_max_value);
+-        maxWidthValue = getResources().getInteger(R.integer.thickness_max_value);
+     }
+ 
+     @Override
+@@ -102,16 +101,26 @@
+         EditText widthEditText = (EditText) root.findViewById(R.id.ed_width);
+         EditText thicknessEditText = (EditText) root.findViewById(R.id.ed_thickness);
+ 
+-       quantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxQuantityValue)});
+-       quantityEditText.addTextChangedListener(new SliderChangeWatcher(quantitySlider));
++        quantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxQuantityValue)});
++        quantityEditText.addTextChangedListener(new SliderChangeWatcher(quantitySlider));
+ 
+-       lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxLengthValue)});
+-       lengthEditText.addTextChangedListener(new SliderChangeWatcher(lengthSlider));
++        lengthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxLengthValue)});
++        lengthEditText.addTextChangedListener(new SliderChangeWatcher(lengthSlider));
+ 
++        widthEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxWidthValue)});
++        widthEditText.addTextChangedListener(new SliderChangeWatcher(widthSlider));
+ 
++        thicknessEditText.setFilters(new InputFilter[]{new InputFilterMinMax(minValue, maxThicknessValue)});
++        thicknessEditText.addTextChangedListener(new SliderChangeWatcher(thicknessSlider));
++
++        quantitySlider.addOnChangeListener ((slider, value, fromUser) -> {
++            System.out.println(value);
++            int i = (int) value;
++            quantityEditText.setText(String.valueOf(i));
++        });
+ 
+ 
+-        busbarViewModel.getText().observe(this, s -> textView.setText(s));
++                busbarViewModel.getText().observe(this, s -> textView.setText(s));
+         return root;
+ 
+     }
+Index: app/src/main/java/ru/bloshound/electricalbusbars/util/slider/SliderChangeWatcher.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/ru/bloshound/electricalbusbars/util/slider/SliderChangeWatcher.java	(revision 04f2532580cd37d64b07926440046a5c4d67a189)
++++ app/src/main/java/ru/bloshound/electricalbusbars/util/slider/SliderChangeWatcher.java	(date 1610976952128)
+@@ -6,6 +6,8 @@
+ 
+ import com.google.android.material.slider.Slider;
+ 
++import androidx.annotation.NonNull;
++
+ public class SliderChangeWatcher implements TextWatcher {
+ 
+     Slider slider;
+@@ -25,7 +27,7 @@
+     }
+ 
+     @Override
+-    public void afterTextChanged(Editable s) {
++    public void afterTextChanged(@NonNull Editable s) {
+ 
+         if (TextUtils.isDigitsOnly(s) && !TextUtils.isEmpty(s)) {
+             int i = Integer.parseInt(s.toString());
+Index: app/src/main/java/ru/bloshound/electricalbusbars/util/InputFilterMinMax.java
+===================================================================
+--- app/src/main/java/ru/bloshound/electricalbusbars/util/InputFilterMinMax.java	(revision 04f2532580cd37d64b07926440046a5c4d67a189)
++++ app/src/main/java/ru/bloshound/electricalbusbars/util/textedit/InputFilterMinMax.java	(date 1610973848655)
+@@ -1,4 +1,4 @@
+-package ru.bloshound.electricalbusbars.util;
++package ru.bloshound.electricalbusbars.util.textedit;
+ 
+ import android.text.InputFilter;
+ import android.text.Spanned;
