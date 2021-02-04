@@ -115,11 +115,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFromPreferences() {
 
-        if (mSharedPreferencesHelper.getLastBusbar() == null) {
-            mMaterail_autotv.setText(Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get("copper")).getMaterial());
+        if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
+
+            String initMaterial = Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get(getString(R.string.copper_material))).getMaterial();
+            mMaterail_autotv.setText(initMaterial);
+
             int initLength = Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get("copper")).getLength();
             mLength_ed.setText(String.valueOf(initLength));
             mLength_slider.setValue(initLength);
+
+
         }
 
     }

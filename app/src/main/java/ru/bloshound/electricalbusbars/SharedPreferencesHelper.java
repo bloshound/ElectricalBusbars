@@ -32,14 +32,24 @@ public class SharedPreferencesHelper {
     private Gson mGson = new Gson();
     private Context context;
 
-    private Busbar lastBusbar;
+    private String lastMaterial;
+    private int lastQuantity;
 
-    public void setLastBusbar(){
+    public void setLastQuantity(int quantity) {
+        this.lastQuantity = quantity;
+    }
+
+    public int getLastQuantity() {
+        return lastQuantity;
+    }
+
+    public void setLastMaterial(String material) {
+        this.lastMaterial = material;
 
     }
 
-    public Busbar getLastBusbar() {
-        return null;
+    public String getLastMaterial() {
+        return lastMaterial;
     }
 
 
@@ -51,12 +61,12 @@ public class SharedPreferencesHelper {
 
     public HashMap<String, Busbar> getSavedBusbars() {
         HashMap<String, Busbar> initBusbars = new HashMap<>();
-        Busbar copperBusbar = new Busbar("copper", context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
+        Busbar copperBusbar = new Busbar(context.getResources().getString(R.string.copper_material), context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
                 context.getResources().getInteger(R.integer.default_width),
                 context.getResources().getInteger(R.integer.default_thickness)) {
         };
 
-        Busbar aluminiumBusbar = new Busbar("aluminium", context.getResources().getInteger(R.integer.aluminium_density), context.getResources().getInteger(R.integer.default_length),
+        Busbar aluminiumBusbar = new Busbar(context.getResources().getString(R.string.aluminium_material), context.getResources().getInteger(R.integer.aluminium_density), context.getResources().getInteger(R.integer.default_length),
                 context.getResources().getInteger(R.integer.default_width),
                 context.getResources().getInteger(R.integer.default_thickness)) {
         };

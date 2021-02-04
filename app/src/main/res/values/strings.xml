@@ -8,7 +8,6 @@
     <string name="select_thickness_label">Select thickness of busbars:</string>
     <string name="save_and_calculate">Save and Calculate</string>
 
-
     <integer name="min_value">1</integer>
     <integer name="step_size">1</integer>
     <integer name="quantity_max_value">10</integer>
@@ -24,6 +23,9 @@
 
     <integer name="copper_density">8970</integer>
     <integer name="aluminium_density">2710</integer>
+
+    <string name="copper_material">copper</string>
+    <string name="aluminium_material">aluminium</string>
 
 
 
