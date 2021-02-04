@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.google.android.material.slider.Slider;
 
-import java.util.Objects;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
@@ -117,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
 
-            String initMaterial = Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get(getString(R.string.copper_material))).getMaterial();
-            mMaterail_autotv.setText(initMaterial);
+            String initMaterial = new Random().nextBoolean()?
+                    getResources().getString(R.string.aluminium_material): getResources().getString(R.string.copper_material);
 
-            int initLength = Objects.requireNonNull(mSharedPreferencesHelper.getSavedBusbars().get("copper")).getLength();
+            int initLength = getResources().getInteger(R.integer.default_length);
             mLength_ed.setText(String.valueOf(initLength));
             mLength_slider.setValue(initLength);
 
