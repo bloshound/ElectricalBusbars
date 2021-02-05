@@ -98,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
         mThicknessInputWatchSlider = new SliderAfterChangeTextWatcher(mThickness_slider);
 
 
-        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
-        mLengthSliderListener = (slider, value, fromUser) -> mLength_ed.setText(String.valueOf((int) value));
-        mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf((int) value));
-        mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf((int) value));
+        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf(value));
+        mLengthSliderListener = (slider, value, fromUser) -> mLength_ed.setText(String.valueOf(value));
+        mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf(value));
+        mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf(value));
 
         setHints();
 
@@ -114,17 +114,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFromPreferences() {
-
         if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
+            Resources r = getResources();
 
-            String initMaterial = new Random().nextBoolean()?
-                    getResources().getString(R.string.aluminium_material): getResources().getString(R.string.copper_material);
+            String initMaterial = new Random().nextBoolean() ?
+                    r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
+            mMaterail_autotv.setText(initMaterial);
 
-            int initLength = getResources().getInteger(R.integer.default_length);
+            int initQuantity = r.getInteger(R.integer.default_quantity);
+            mQuantity_ed.setText(String.valueOf(initQuantity));
+            mQuantity_slider.setValue(initQuantity);
+
+            int initLength = r.getInteger(R.integer.default_length);
             mLength_ed.setText(String.valueOf(initLength));
             mLength_slider.setValue(initLength);
 
+            int initWidth = r.getInteger(R.integer.default_width);
+            mWidth_ed.setText(String.valueOf(initWidth));
+            mWidth_slider.setValue(initWidth);
 
+            int initThickness = r.getInteger(R.integer.default_thickness);
+            mThickness_ed.setText(String.valueOf(initThickness));
+            mThickness_slider.setValue(initThickness);
         }
 
     }
@@ -159,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TextWatcher следящие за соотвествующеми Slider
     private static class SliderAfterChangeTextWatcher extends AfterChangeTextWatcher {
         Slider slider;
 
