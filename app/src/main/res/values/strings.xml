@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Electrical Busbars</string>
-
+    <string name="chose_or_input_params_of_busbars">Chose or input params of busbars:</string>
+    <string name="def_density">Default density</string>
 
     <string name="select_quantity_label">Select the quantity of busbars:</string>
     <string name="select_length_label">Select length of busbars:</string>
@@ -26,8 +27,6 @@
 
     <string name="copper_material">copper</string>
     <string name="aluminium_material">aluminium</string>
-    <string name="material">Material</string>
-    <string name="chose_or_input_params_of_busbars">Chose or input params of busbars:</string>
-
+    <string name="material">material</string>
 
 </resources>

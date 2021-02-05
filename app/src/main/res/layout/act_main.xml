@@ -13,42 +13,51 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-        <Button
+        <TextView
+            android:id="@+id/tv_label_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/aluminium_material"/>
-
-
+            android:gravity="center"
+            android:text="@string/chose_or_input_params_of_busbars"
+            android:textColor="@color/black"
+            android:textSize="@dimen/label_fontSize" />
 
         <LinearLayout
+            android:id="@+id/ll_material"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:weightSum="5">
 
             <AutoCompleteTextView
-                android:id="@+id/actv_chosen_material"
-                android:layout_width="wrap_content"
+                android:id="@+id/auto_tv_chosen_material"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginStart="10dp"
                 android:completionThreshold="0"
                 android:hint="@string/material"
-                android:layout_weight="3"
                 android:inputType="textAutoCorrect"
                 android:textColorHint="@color/purple_200" />
 
             <CheckBox
+                android:id="@+id/check_density"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="asdas"
-                android:layout_weight="1" />
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="@string/def_density"
+                android:textColor="@color/purple_200"
+                android:textSize="@dimen/label_fontSize" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:id="@+id/ed_density"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="dfdasf"
                 android:layout_weight="1"
                 android:autofillHints=""
-                android:inputType="number" />
+                android:gravity="end"
+                android:inputType="number"
+                android:textColorHint="@color/purple_200" />
 
         </LinearLayout>
 
@@ -60,17 +69,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/label_quantity"
+                android:id="@+id/tv_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/select_quantity_label"
                 android:textSize="@dimen/label_fontSize" />
-
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -91,9 +96,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
+                    android:autofillHints=""
                     android:inputType="number"
-                    android:textColorHint="@color/purple_200"
-                    android:autofillHints="" />
+                    android:textColor="@color/purple_700"
+                    android:textColorHint="@color/purple_200" />
 
             </LinearLayout>
 
@@ -105,7 +111,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <TextView
                 android:id="@+id/label_length"
                 android:layout_width="match_parent"
@@ -114,7 +119,6 @@
                 android:gravity="start"
                 android:text="@string/select_length_label"
                 android:textSize="@dimen/label_fontSize" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,10 +139,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
+                    android:autofillHints=""
                     android:inputType="number"
-                    android:textColorHint="@color/purple_200"
-                    android:autofillHints="" />
-
+                    android:textColor="@color/purple_700"
+                    android:textColorHint="@color/purple_200" />
 
             </LinearLayout>
 
@@ -161,7 +165,6 @@
                 android:text="@string/select_width_label"
                 android:textSize="@dimen/label_fontSize" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,9 +184,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
+                    android:autofillHints=""
                     android:inputType="number"
-                    android:textColorHint="@color/purple_200"
-                    android:autofillHints="" />
+                    android:textColor="@color/purple_700"
+                    android:textColorHint="@color/purple_200" />
 
             </LinearLayout>
 
@@ -225,15 +229,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
+                    android:autofillHints=""
                     android:inputType="number"
-                    android:textColorHint="@color/purple_200"
-                    android:autofillHints="" />
+                    android:textColor="@color/purple_700"
+                    android:textColorHint="@color/purple_200" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_save_calculate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -241,6 +247,5 @@
             android:text="@string/save_and_calculate" />
 
     </LinearLayout>
-
 
 </ScrollView>

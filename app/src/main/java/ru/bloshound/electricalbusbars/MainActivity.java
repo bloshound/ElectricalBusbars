@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        mMaterail_autotv = findViewById(R.id.actv_chosen_material);
+        mMaterail_autotv = findViewById(R.id.auto_tv_chosen_material);
 
         mQuantity_ed = findViewById(R.id.ed_quantity);
         mLength_ed = findViewById(R.id.ed_length);
