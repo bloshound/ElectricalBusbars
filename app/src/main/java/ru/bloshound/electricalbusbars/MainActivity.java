@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.slider.Slider;
 
@@ -23,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private ArrayAdapter<String> mMaterialAdapter;
 
-    private AutoCompleteTextView mMaterail_autotv;
+    private EditText mDensity_ed;
+
+    private AutoCompleteTextView mMaterial_auto_tv;
     private EditText mQuantity_ed;
     private EditText mLength_ed;
     private EditText mWidth_ed;
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Slider mThickness_slider;
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
-        if (hasFocus) mMaterail_autotv.showDropDown();
+        if (hasFocus) mMaterial_auto_tv.showDropDown();
     };
 
     private MinMaxEditTextWatcher mQuantityMinMaxInput;
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private SliderAfterChangeTextWatcher mThicknessInputWatchSlider;
     private Slider.OnChangeListener mThicknessSliderListener;
 
+    private MinMaxEditTextWatcher mDensityMinMaxInput;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        mMaterail_autotv = findViewById(R.id.auto_tv_chosen_material);
+        mDensity_ed = findViewById(R.id.ed_density);
+        mMaterial_auto_tv = findViewById(R.id.auto_tv_chosen_material);
 
         mQuantity_ed = findViewById(R.id.ed_quantity);
         mLength_ed = findViewById(R.id.ed_length);
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mMaterialAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,
                 mSharedPreferencesHelper.getMaterials());
-        mMaterail_autotv.setAdapter(mMaterialAdapter);
+        mMaterial_auto_tv.setAdapter(mMaterialAdapter);
 
         initFromPreferences();
 
@@ -91,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 getResources().getInteger(R.integer.width_max_value));
         mThicknessMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.thickness_max_value));
+        mDensityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
+                getResources().getInteger(R.integer.density_max_value));
+
 
 
         mQuantityInputWatchSlider = new SliderAfterChangeTextWatcher(mQuantity_slider);
@@ -117,14 +126,14 @@ public class MainActivity extends AppCompatActivity {
     private void initFromPreferences() {
         Resources r = getResources();
         String initMaterial;
-        double initDensity;
-        int initQuantity, initLength, initWidth, initThickness;
+        int initQuantity, initDensity, initLength, initWidth, initThickness;
         if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
 
             initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
 
-            initDensity = 0;
+            initDensity =  initMaterial.equalsIgnoreCase(r.getString(R.string.copper_material))?
+                    r.getInteger(R.integer.copper_density):r.getInteger(R.integer.aluminium_density);
 
             initQuantity = r.getInteger(R.integer.default_quantity);
             initLength = r.getInteger(R.integer.default_length);
@@ -142,7 +151,10 @@ public class MainActivity extends AppCompatActivity {
             initThickness = lastBusbar.getThickness();
         }
 
-        mMaterail_autotv.setText(initMaterial);
+        mMaterial_auto_tv.setText(initMaterial);
+
+        mDensity_ed.setText(String.valueOf(initDensity));
+
 
         mQuantity_ed.setText(String.valueOf(initQuantity));
         mQuantity_slider.setValue(initQuantity);
@@ -165,10 +177,11 @@ public class MainActivity extends AppCompatActivity {
         mLength_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.length_max_value));
         mWidth_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.width_max_value));
         mThickness_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.thickness_max_value));
+        mDensity_ed.setHint(r.getInteger(R.integer.min_value)+ " - " + r.getInteger(R.integer.density_max_value));
     }
 
     private void setWatchersAndListeners() {
-        mMaterail_autotv.setOnFocusChangeListener(mOnMaterialFocusChangeListener);
+        mMaterial_auto_tv.setOnFocusChangeListener(mOnMaterialFocusChangeListener);
 
         mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
         mQuantity_ed.addTextChangedListener(mQuantityInputWatchSlider);
@@ -185,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
         mThickness_ed.addTextChangedListener(mThicknessMinMaxInput);
         mThickness_ed.addTextChangedListener(mThicknessInputWatchSlider);
         mThickness_slider.addOnChangeListener(mThicknessSliderListener);
+
+        mDensity_ed.addTextChangedListener(mDensityMinMaxInput);
 
     }
 

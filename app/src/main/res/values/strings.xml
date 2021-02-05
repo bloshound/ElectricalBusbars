@@ -15,12 +15,14 @@
     <integer name="length_max_value">1000</integer>
     <integer name="width_max_value">150</integer>
     <integer name="thickness_max_value">20</integer>
+    <integer name="density_max_value">22610</integer>
 
 
     <integer name="default_quantity">3</integer>
     <integer name="default_length">100</integer>
     <integer name="default_width">50</integer>
     <integer name="default_thickness">10</integer>
+
 
     <integer name="copper_density">8970</integer>
     <integer name="aluminium_density">2710</integer>

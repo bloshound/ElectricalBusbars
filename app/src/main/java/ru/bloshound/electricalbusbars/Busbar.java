@@ -3,12 +3,12 @@ package ru.bloshound.electricalbusbars;
 public abstract class Busbar {
 
     private String material;
-    private double density;
+    private int density;
     private int length;
     private int width;
     private int thickness;
 
-    public Busbar(String material, double density, int length, int width, int thickness) {
+    public Busbar(String material, int density, int length, int width, int thickness) {
         this.material = material;
         this.density = density;
         this.length = length;
@@ -20,7 +20,7 @@ public abstract class Busbar {
         return material;
     }
 
-    public double getDensity() {
+    public int getDensity() {
         return density;
     }
 
