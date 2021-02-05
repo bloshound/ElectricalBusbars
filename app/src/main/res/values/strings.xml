@@ -26,8 +26,7 @@
 
     <string name="copper_material">copper</string>
     <string name="aluminium_material">aluminium</string>
-
-
+    <string name="material">Material</string>
 
 
 </resources>
