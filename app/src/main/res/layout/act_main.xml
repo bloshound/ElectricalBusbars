@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+
     <LinearLayout
         android:id="@+id/root_view"
         android:layout_width="match_parent"
@@ -12,6 +14,17 @@
         android:layout_margin="5dp"
         android:orientation="vertical"
         tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_label"
+            android:text="@string/chose_or_input_params_of_busbars"
+            android:gravity="center"
+            android:textSize="@dimen/label_fontSize"
+
+
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +72,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/select_quantity_label"
-                android:textSize="16sp" />
+                android:textSize="@dimen/label_fontSize" />
 
 
             <LinearLayout
@@ -103,7 +116,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/select_length_label"
-                android:textSize="16sp" />
+                android:textSize="@dimen/label_fontSize" />
 
 
             <LinearLayout
@@ -149,7 +162,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/select_width_label"
-                android:textSize="16sp" />
+                android:textSize="@dimen/label_fontSize" />
 
 
             <LinearLayout
@@ -193,7 +206,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="start"
                 android:text="@string/select_thickness_label"
-                android:textSize="16sp" />
+                android:textSize="@dimen/label_fontSize" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -227,9 +240,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_margin="@dimen/fab_margin"
             android:text="@string/save_and_calculate" />
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
     </LinearLayout>
+
 
 </ScrollView>
