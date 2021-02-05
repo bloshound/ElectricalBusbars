@@ -9,11 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.slider.Slider;
 
 import java.util.Random;
 
-import androidx.appcompat.app.AppCompatActivity;
 import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
 import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
 
@@ -98,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
         mThicknessInputWatchSlider = new SliderAfterChangeTextWatcher(mThickness_slider);
 
 
-        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf(value));
-        mLengthSliderListener = (slider, value, fromUser) -> mLength_ed.setText(String.valueOf(value));
-        mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf(value));
-        mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf(value));
+        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
+        mLengthSliderListener = (slider, value, fromUser) -> mLength_ed.setText(String.valueOf((int) value));
+        mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf((int) value));
+        mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf((int) value));
 
         setHints();
 
