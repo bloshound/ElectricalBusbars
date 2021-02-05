@@ -115,29 +115,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFromPreferences() {
+        Resources r = getResources();
+        String initMaterial;
+        double initDensity;
+        int initQuantity, initLength, initWidth, initThickness;
         if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
-            Resources r = getResources();
 
-            String initMaterial = new Random().nextBoolean() ?
+            initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
-            mMaterail_autotv.setText(initMaterial);
 
-            int initQuantity = r.getInteger(R.integer.default_quantity);
-            mQuantity_ed.setText(String.valueOf(initQuantity));
-            mQuantity_slider.setValue(initQuantity);
+            initDensity = 0;
 
-            int initLength = r.getInteger(R.integer.default_length);
-            mLength_ed.setText(String.valueOf(initLength));
-            mLength_slider.setValue(initLength);
+            initQuantity = r.getInteger(R.integer.default_quantity);
+            initLength = r.getInteger(R.integer.default_length);
+            initWidth = r.getInteger(R.integer.default_width);
+            initThickness = r.getInteger(R.integer.default_thickness);
 
-            int initWidth = r.getInteger(R.integer.default_width);
-            mWidth_ed.setText(String.valueOf(initWidth));
-            mWidth_slider.setValue(initWidth);
-
-            int initThickness = r.getInteger(R.integer.default_thickness);
-            mThickness_ed.setText(String.valueOf(initThickness));
-            mThickness_slider.setValue(initThickness);
+        } else {
+            initQuantity = mSharedPreferencesHelper.getLastQuantity();
+            String material = mSharedPreferencesHelper.getLastMaterial();
+            Busbar lastBusbar = mSharedPreferencesHelper.getSavedBusbars().get(material);
+            initMaterial = lastBusbar.getMaterial();
+            initDensity = lastBusbar.getDensity();
+            initLength = lastBusbar.getLength();
+            initWidth = lastBusbar.getWidth();
+            initThickness = lastBusbar.getThickness();
         }
+
+        mMaterail_autotv.setText(initMaterial);
+
+        mQuantity_ed.setText(String.valueOf(initQuantity));
+        mQuantity_slider.setValue(initQuantity);
+
+        mLength_ed.setText(String.valueOf(initLength));
+        mLength_slider.setValue(initLength);
+
+        mWidth_ed.setText(String.valueOf(initWidth));
+        mWidth_slider.setValue(initWidth);
+
+        mThickness_ed.setText(String.valueOf(initThickness));
+        mThickness_slider.setValue(initThickness);
 
     }
 
