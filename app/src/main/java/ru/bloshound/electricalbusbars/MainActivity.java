@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -76,9 +77,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
 
+
+
         mSharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         root = findViewById(R.id.rl_root_view);
+
 
         mDensity_ed = findViewById(R.id.ed_density);
         mDensity_check = findViewById(R.id.check_density);
@@ -101,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         mMaterial_auto_tv.setAdapter(mMaterialAdapter);
 
         initFromPreferences();
-
 
         mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.quantity_max_value));
@@ -140,28 +143,29 @@ public class MainActivity extends AppCompatActivity {
         mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf((int) value));
 
         mDensityCheckListener = (buttonView, isChecked) -> {
-
-
             Resources r = getResources();
-            String density = mDensity_ed.getText().toString();
             String materail = mMaterial_auto_tv.getText().toString();
 
             if (isChecked) {
+                mDensity_ed.setFocusableInTouchMode(false);
+                if (TextUtils.isEmpty(mDensity_ed.getText()))
+                    mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.min_value)));
                 mDensity_ed.clearFocus();
-                if (!TextUtils.isEmpty(density)) {
-                    if (materail.toLowerCase().contains(r.getString(R.string.copper_material))) {
-                        if (Integer.parseInt(density) != r.getInteger(R.integer.copper_density)) {
-                            mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.copper_density)));
-                        }
+                String density = mDensity_ed.getText().toString();
+                if (materail.toLowerCase().contains(r.getString(R.string.copper_material))) {
+                    if (Integer.parseInt(density) != r.getInteger(R.integer.copper_density)) {
+                        mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.copper_density)));
+                    }
 
+                }
+                if (materail.toLowerCase().contains(r.getString(R.string.aluminium_material))) {
+                    if (Integer.parseInt(density) != r.getInteger(R.integer.aluminium_density)) {
+                        mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.aluminium_density)));
                     }
                 }
-            }
+            } else mDensity_ed.setFocusableInTouchMode(true);
         };
-
         setHints();
-
-
     }
 
 
