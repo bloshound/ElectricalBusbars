@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View root;
 
+    private CheckBox mDensity_check;
     private EditText mDensity_ed;
     private AutoCompleteTextView mMaterial_auto_tv;
     private EditText mQuantity_ed;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private AfterChangeTextWatcher mMaterialWatcher;
+
 
     private MinMaxEditTextWatcher mQuantityMinMaxInput;
     private SliderAfterChangeTextWatcher mQuantityInputWatchSlider;
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MinMaxEditTextWatcher mDensityMinMaxInput;
 
+    private CompoundButton.OnCheckedChangeListener mDensityCheckListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         root = findViewById(R.id.rl_root_view);
 
         mDensity_ed = findViewById(R.id.ed_density);
+        mDensity_check = findViewById(R.id.check_density);
         mMaterial_auto_tv = findViewById(R.id.auto_tv_chosen_material);
 
         mQuantity_ed = findViewById(R.id.ed_quantity);
@@ -132,9 +139,31 @@ public class MainActivity extends AppCompatActivity {
         mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf((int) value));
         mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf((int) value));
 
+        mDensityCheckListener = (buttonView, isChecked) -> {
+
+
+            Resources r = getResources();
+            String density = mDensity_ed.getText().toString();
+            String materail = mMaterial_auto_tv.getText().toString();
+
+            if (isChecked) {
+                mDensity_ed.clearFocus();
+                if (!TextUtils.isEmpty(density)) {
+                    if (materail.toLowerCase().contains(r.getString(R.string.copper_material))) {
+                        if (Integer.parseInt(density) != r.getInteger(R.integer.copper_density)) {
+                            mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.copper_density)));
+                        }
+
+                    }
+                }
+            }
+        };
+
         setHints();
 
+
     }
+
 
     @Override
     protected void onResume() {
@@ -228,6 +257,9 @@ public class MainActivity extends AppCompatActivity {
         mThickness_slider.addOnChangeListener(mThicknessSliderListener);
 
         mDensity_ed.addTextChangedListener(mDensityMinMaxInput);
+        mDensity_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
+
+        mDensity_check.setOnCheckedChangeListener(mDensityCheckListener);
 
     }
 
@@ -258,9 +290,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (v instanceof EditText) {
-                if (!hasFocus)
-                    ((EditText) v).setText(context.getResources().getInteger(R.integer.min_value));
+            if (!hasFocus) {
+                if (v instanceof EditText) {
+                    if (TextUtils.isEmpty(((EditText) v).getText())) ((EditText) v)
+                            .setText(String.valueOf((context.getResources().getInteger(R.integer.min_value))));
+                }
             }
         }
     }

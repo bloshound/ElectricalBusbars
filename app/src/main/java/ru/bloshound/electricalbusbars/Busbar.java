@@ -1,6 +1,8 @@
 package ru.bloshound.electricalbusbars;
 
-public abstract class Busbar {
+import java.io.Serializable;
+
+public abstract class Busbar implements Serializable{
 
     private String material;
     private int density;
