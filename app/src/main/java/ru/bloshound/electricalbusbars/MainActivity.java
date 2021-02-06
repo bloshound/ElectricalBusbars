@@ -1,5 +1,6 @@
 package ru.bloshound.electricalbusbars;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         if (hasFocus) mMaterial_auto_tv.showDropDown();
     };
 
+    private AfterChangeTextWatcher mMaterialWatcher;
+
     private MinMaxEditTextWatcher mQuantityMinMaxInput;
     private SliderAfterChangeTextWatcher mQuantityInputWatchSlider;
     private Slider.OnChangeListener mQuantitySliderListener;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private SliderAfterChangeTextWatcher mThicknessInputWatchSlider;
     private Slider.OnChangeListener mThicknessSliderListener;
 
+
     private MinMaxEditTextWatcher mDensityMinMaxInput;
 
 
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPreferencesHelper = new SharedPreferencesHelper(this);
 
-        root = findViewById(R.id.ll_root_view);
+        root = findViewById(R.id.rl_root_view);
 
         mDensity_ed = findViewById(R.id.ed_density);
         mMaterial_auto_tv = findViewById(R.id.auto_tv_chosen_material);
@@ -103,6 +107,18 @@ public class MainActivity extends AppCompatActivity {
         mDensityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.density_max_value));
 
+        mMaterialWatcher = new AfterChangeTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                Resources r = getResources();
+                if (s.toString().toLowerCase().contains(r.getString(R.string.copper_material))) {
+                    root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
+                } else if (s.toString().toLowerCase().contains(r.getString(R.string.aluminium_material))) {
+                    root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_aluminium, null));
+                } else
+                    root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_other, null));
+            }
+        };
 
 
         mQuantityInputWatchSlider = new SliderAfterChangeTextWatcher(mQuantity_slider);
@@ -189,21 +205,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void setWatchersAndListeners() {
         mMaterial_auto_tv.setOnFocusChangeListener(mOnMaterialFocusChangeListener);
+        mMaterial_auto_tv.addTextChangedListener(mMaterialWatcher);
 
         mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
         mQuantity_ed.addTextChangedListener(mQuantityInputWatchSlider);
+        mQuantity_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
         mQuantity_slider.addOnChangeListener(mQuantitySliderListener);
 
         mLength_ed.addTextChangedListener(mLengthMinMaxInput);
         mLength_ed.addTextChangedListener(mLengthInputWatchSlider);
+        mLength_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
         mLength_slider.addOnChangeListener(mLengthSliderListener);
 
         mWidth_ed.addTextChangedListener(mWidthMinMaxInput);
         mWidth_ed.addTextChangedListener(mWidthInputWatchSlider);
+        mWidth_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
         mWidth_slider.addOnChangeListener(mWidthSliderListener);
 
         mThickness_ed.addTextChangedListener(mThicknessMinMaxInput);
         mThickness_ed.addTextChangedListener(mThicknessInputWatchSlider);
+        mThickness_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
         mThickness_slider.addOnChangeListener(mThicknessSliderListener);
 
         mDensity_ed.addTextChangedListener(mDensityMinMaxInput);
@@ -223,6 +244,23 @@ public class MainActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(s) && TextUtils.isDigitsOnly(s)) {
                 int value = Integer.parseInt(s.toString());
                 slider.setValue(value);
+            }
+        }
+    }
+
+    private static class EmptyToMinOnFocusChangeListener implements View.OnFocusChangeListener {
+
+        Context context;
+
+        public EmptyToMinOnFocusChangeListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (v instanceof EditText) {
+                if (!hasFocus)
+                    ((EditText) v).setText(context.getResources().getInteger(R.integer.min_value));
             }
         }
     }

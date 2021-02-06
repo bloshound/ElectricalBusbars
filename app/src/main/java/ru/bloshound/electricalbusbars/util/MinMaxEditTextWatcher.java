@@ -36,7 +36,9 @@ public class MinMaxEditTextWatcher implements TextWatcher {
                 s.replace(0, s.length(), String.valueOf(min));
             }
 
-            Selection.setSelection(s, s.length());
+
         }
+
+        Selection.setSelection(s, s.length());
     }
 }
