@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.slider.Slider;
 
@@ -169,13 +170,11 @@ public class MainActivity extends AppCompatActivity {
         mThickness_ed.setText(String.valueOf(initThickness));
         mThickness_slider.setValue(initThickness);
 
-        if (initMaterial.toLowerCase().contains(r.getString(R.string.copper_material)) {
-            root.setBackground();
-        }
-
-        if ((initMaterial.toLowerCase().contains(r.getString(R.string.aluminium_material)) {
-            root.setBackground();
-        }
+        if (initMaterial.toLowerCase().contains(r.getString(R.string.copper_material))) {
+            root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
+        } else if (initMaterial.toLowerCase().contains(r.getString(R.string.aluminium_material))) {
+            root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_aluminium, null));
+        } else root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_other, null));
     }
 
 

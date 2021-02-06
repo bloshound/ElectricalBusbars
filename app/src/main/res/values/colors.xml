@@ -12,5 +12,7 @@
     <color name="green">#388E3C</color>
     <color name="yellow">#FBC02D</color>
     <color name="my">#0097A7</color>
+    <color name="copper_color">#FFD33C16</color>
+    <color name="aluminium_color">#595959</color>
 
 </resources>
