@@ -31,4 +31,11 @@
     <string name="aluminium_material">aluminium</string>
     <string name="material">material</string>
 
+
+    <string name="density">density</string>
+    <string name="quantity">quantity</string>
+    <string name="length">length</string>
+    <string name="width">width</string>
+    <string name="thickness">thickness</string>
+
 </resources>

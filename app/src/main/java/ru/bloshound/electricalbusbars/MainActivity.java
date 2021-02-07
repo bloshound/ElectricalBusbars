@@ -2,17 +2,20 @@ package ru.bloshound.electricalbusbars;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -24,6 +27,11 @@ import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
 import ru.bloshound.electricalbusbars.util.MinMaxEditTextWatcher;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String BACKGROUND_KEY = "background";
+    private static final String DENSITY_FOCUSABLE_KEY = "density_focusable";
+    private static final String DENSITY_FOCUSABLE_TOUCH_KEY = "density_focusable_touch";
+
 
     private SharedPreferencesHelper mSharedPreferencesHelper;
     private ArrayAdapter<String> mMaterialAdapter;
@@ -77,12 +85,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
 
-
-
         mSharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         root = findViewById(R.id.rl_root_view);
-
 
         mDensity_ed = findViewById(R.id.ed_density);
         mDensity_check = findViewById(R.id.check_density);
@@ -104,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPreferencesHelper.getMaterials());
         mMaterial_auto_tv.setAdapter(mMaterialAdapter);
 
-        initFromPreferences();
+
+        initFromPreferences(savedInstanceState);
+
 
         mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.quantity_max_value));
@@ -123,10 +130,14 @@ public class MainActivity extends AppCompatActivity {
                 Resources r = getResources();
                 if (s.toString().toLowerCase().contains(r.getString(R.string.copper_material))) {
                     root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
+                    root.setTag(R.drawable.gradient_copper);
                 } else if (s.toString().toLowerCase().contains(r.getString(R.string.aluminium_material))) {
                     root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_aluminium, null));
-                } else
+                    root.setTag(R.drawable.gradient_aluminium);
+                } else {
                     root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_other, null));
+                    root.setTag(R.drawable.gradient_other);
+                }
             }
         };
 
@@ -145,26 +156,35 @@ public class MainActivity extends AppCompatActivity {
         mDensityCheckListener = (buttonView, isChecked) -> {
             Resources r = getResources();
             String materail = mMaterial_auto_tv.getText().toString();
-
             if (isChecked) {
-                mDensity_ed.setFocusableInTouchMode(false);
+
                 if (TextUtils.isEmpty(mDensity_ed.getText()))
                     mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.min_value)));
-                mDensity_ed.clearFocus();
+
                 String density = mDensity_ed.getText().toString();
                 if (materail.toLowerCase().contains(r.getString(R.string.copper_material))) {
+                    mDensity_ed.setFocusableInTouchMode(false);
+                    mDensity_ed.setFocusable(false);
                     if (Integer.parseInt(density) != r.getInteger(R.integer.copper_density)) {
                         mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.copper_density)));
+
                     }
 
                 }
                 if (materail.toLowerCase().contains(r.getString(R.string.aluminium_material))) {
+                    mDensity_ed.setFocusableInTouchMode(false);
+                    mDensity_ed.setFocusable(false);
                     if (Integer.parseInt(density) != r.getInteger(R.integer.aluminium_density)) {
                         mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.aluminium_density)));
                     }
                 }
-            } else mDensity_ed.setFocusableInTouchMode(true);
+            } else {
+                mDensity_ed.setFocusableInTouchMode(true);
+                mDensity_ed.setFocusable(true);
+            }
         };
+
+
         setHints();
     }
 
@@ -175,7 +195,31 @@ public class MainActivity extends AppCompatActivity {
         setWatchersAndListeners();
     }
 
-    private void initFromPreferences() {
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(BACKGROUND_KEY, (int) root.getTag());
+
+        outState.putBoolean(DENSITY_FOCUSABLE_KEY, mDensity_ed.isFocusable());
+        outState.putBoolean(DENSITY_FOCUSABLE_TOUCH_KEY, mDensity_ed.isFocusableInTouchMode());
+
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), savedInstanceState.getInt(BACKGROUND_KEY), null);
+        root.setBackground(drawable);
+        root.setTag(savedInstanceState.getInt(BACKGROUND_KEY));
+
+        mDensity_ed.setFocusable(savedInstanceState.getBoolean(DENSITY_FOCUSABLE_KEY));
+        mDensity_ed.setFocusableInTouchMode(savedInstanceState.getBoolean(DENSITY_FOCUSABLE_TOUCH_KEY));
+
+    }
+
+    private void initFromPreferences(Bundle savedInstanceState) {
         Resources r = getResources();
         String initMaterial;
         int initQuantity, initDensity, initLength, initWidth, initThickness;
@@ -184,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
             initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
 
-            initDensity =  initMaterial.equalsIgnoreCase(r.getString(R.string.copper_material))?
-                    r.getInteger(R.integer.copper_density):r.getInteger(R.integer.aluminium_density);
+            initDensity = initMaterial.equalsIgnoreCase(r.getString(R.string.copper_material)) ?
+                    r.getInteger(R.integer.copper_density) : r.getInteger(R.integer.aluminium_density);
 
             initQuantity = r.getInteger(R.integer.default_quantity);
             initLength = r.getInteger(R.integer.default_length);
@@ -219,11 +263,19 @@ public class MainActivity extends AppCompatActivity {
         mThickness_ed.setText(String.valueOf(initThickness));
         mThickness_slider.setValue(initThickness);
 
-        if (initMaterial.toLowerCase().contains(r.getString(R.string.copper_material))) {
-            root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
-        } else if (initMaterial.toLowerCase().contains(r.getString(R.string.aluminium_material))) {
-            root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_aluminium, null));
-        } else root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_other, null));
+        if (savedInstanceState == null) {
+
+            if (initMaterial.toLowerCase().contains(r.getString(R.string.copper_material))) {
+                root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
+                root.setTag(R.drawable.gradient_copper);
+            } else if (initMaterial.toLowerCase().contains(r.getString(R.string.aluminium_material))) {
+                root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_aluminium, null));
+                root.setTag(R.drawable.gradient_aluminium);
+            } else {
+                root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_other, null));
+                root.setTag(R.drawable.gradient_other);
+            }
+        }
     }
 
 
@@ -296,8 +348,16 @@ public class MainActivity extends AppCompatActivity {
         public void onFocusChange(View v, boolean hasFocus) {
             if (!hasFocus) {
                 if (v instanceof EditText) {
-                    if (TextUtils.isEmpty(((EditText) v).getText())) ((EditText) v)
-                            .setText(String.valueOf((context.getResources().getInteger(R.integer.min_value))));
+                    if (TextUtils.isEmpty(((EditText) v).getText())) {
+                        ((EditText) v).setText(String.valueOf((context.getResources().getInteger(R.integer.min_value))));
+
+                        Toast toast = Toast.makeText(context,
+                                "Parametr: " + (String) v.getTag() + " is empty,\nseted minimal available value",
+                                Toast.LENGTH_SHORT);
+                        View parentV_x2 = (View) v.getParent().getParent();
+                        toast.setGravity(Gravity.TOP, 0, (int) parentV_x2.getY() + 200);
+                        toast.show();
+                    }
                 }
             }
         }
