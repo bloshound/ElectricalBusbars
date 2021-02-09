@@ -318,28 +318,16 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-
-        int squareOfSection = Integer.parseInt(mWidth_ed.getText().toString()) *
-                Integer.parseInt(mThickness_ed.getText().toString());
-
-        int capasity1 = squareOfSection * Integer.parseInt(mLength_ed.getText().toString());
-
-        int capasity_all = capasity1 * Integer.parseInt(mQuantity_ed.getText().toString());
-
+        int squareOfSection = Integer.parseInt(mWidth_ed.getText().toString()) * Integer.parseInt(mThickness_ed.getText().toString());
+        int capacity1 = squareOfSection * Integer.parseInt(mLength_ed.getText().toString());
+        int capacity_all = capacity1 * Integer.parseInt(mQuantity_ed.getText().toString());
 
         StringBuilder geometryInfoSb = new StringBuilder();
-
         geometryInfoSb.append("Square of section is ").append(squareOfSection).append(" m\u00B2.").append("\n");
+        geometryInfoSb.append("Capacity of one busbar is ").append(capacity1).append(" m\u00B3.").append("\n");
+        geometryInfoSb.append("Capacity of quantity busbar is ").append(capacity_all).append(" m\u00B3.").append("\n");
 
-        geometryInfoSb.append("Capacity of one busbar is ").append(capasity1).append(" m\u00B3.").append("\n");
-
-        geometryInfoSb.append("Capacity of quantity busbar is ").append(capasity_all).append(" m\u00B3.").append("\n");
-
-        String s = geometryInfoSb.toString();
-
-        mGeometryInfo_tv.setText(s);
-
-
+        mGeometryInfo_tv.setText(geometryInfoSb);
     }
 
     private void setWatchersAndListeners() {
