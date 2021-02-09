@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.slider.Slider;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
@@ -50,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private Slider mLength_slider;
     private Slider mWidth_slider;
     private Slider mThickness_slider;
+    private TextView mGeometryInfo_tv;
+
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
         if (hasFocus) mMaterial_auto_tv.showDropDown();
@@ -102,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         mLength_slider = findViewById(R.id.slider_length);
         mWidth_slider = findViewById(R.id.slider_width);
         mThickness_slider = findViewById(R.id.slider_thickness);
+        mGeometryInfo_tv = findViewById(R.id.tv_geometry_information);
 
 
         mMaterialAdapter = new ArrayAdapter<>(this,
@@ -148,17 +156,29 @@ public class MainActivity extends AppCompatActivity {
         mThicknessInputWatchSlider = new SliderAfterChangeTextWatcher(mThickness_slider);
 
 
-        mQuantitySliderListener = (slider, value, fromUser) -> mQuantity_ed.setText(String.valueOf((int) value));
-        mLengthSliderListener = (slider, value, fromUser) -> mLength_ed.setText(String.valueOf((int) value));
-        mWidthSliderListener = (slider, value, fromUser) -> mWidth_ed.setText(String.valueOf((int) value));
-        mThicknessSliderListener = (slider, value, fromUser) -> mThickness_ed.setText(String.valueOf((int) value));
+        mQuantitySliderListener = (slider, value, fromUser) -> {
+            mQuantity_ed.setText(String.valueOf((int) value));
+            setGeometryInfo();
+        };
+        mLengthSliderListener = (slider, value, fromUser) -> {
+            mLength_ed.setText(String.valueOf((int) value));
+            setGeometryInfo();
+        };
+        mWidthSliderListener = (slider, value, fromUser) -> {
+            mWidth_ed.setText(String.valueOf((int) value));
+            setGeometryInfo();
+        };
+        mThicknessSliderListener = (slider, value, fromUser) -> {
+            mThickness_ed.setText(String.valueOf((int) value));
+            setGeometryInfo();
+        };
 
         mDensityCheckListener = (buttonView, isChecked) -> {
             Resources r = getResources();
             String material = mMaterial_auto_tv.getText().toString();
             String density;
-            if (isChecked) {
 
+            if (isChecked) {
                 if (TextUtils.isEmpty(mDensity_ed.getText()))
                     mDensity_ed.setText(String.valueOf(r.getInteger(R.integer.min_value)));
                 density = mDensity_ed.getText().toString();
@@ -224,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         Resources r = getResources();
         String initMaterial;
         int initQuantity, initDensity, initLength, initWidth, initThickness;
-        if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
+        if (mSharedPreferencesHelper.getLastMaterial() == null) {
 
             initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
@@ -277,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
                 root.setTag(R.drawable.gradient_other);
             }
         }
+
+        setGeometryInfo();
     }
 
 
@@ -286,7 +308,38 @@ public class MainActivity extends AppCompatActivity {
         mLength_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.length_max_value));
         mWidth_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.width_max_value));
         mThickness_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.thickness_max_value));
-        mDensity_ed.setHint(r.getInteger(R.integer.min_value)+ " - " + r.getInteger(R.integer.density_max_value));
+        mDensity_ed.setHint(r.getInteger(R.integer.min_value) + " - " + r.getInteger(R.integer.density_max_value));
+    }
+
+    private void setGeometryInfo() {
+        List<EditText> viewList = Arrays.asList(mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed);
+        for (EditText et : viewList) {
+            if (TextUtils.isEmpty(et.getText()) && !TextUtils.isDigitsOnly(et.getText())) {
+                return;
+            }
+        }
+
+        int squareOfSection = Integer.parseInt(mWidth_ed.getText().toString()) *
+                Integer.parseInt(mThickness_ed.getText().toString());
+
+        int capasity1 = squareOfSection * Integer.parseInt(mLength_ed.getText().toString());
+
+        int capasity_all = capasity1 * Integer.parseInt(mQuantity_ed.getText().toString());
+
+
+        StringBuilder geometryInfoSb = new StringBuilder();
+
+        geometryInfoSb.append("Square of section is ").append(squareOfSection).append(" m\u00B2.").append("\n");
+
+        geometryInfoSb.append("Capacity of one busbar is ").append(capasity1).append(" m\u00B3.").append("\n");
+
+        geometryInfoSb.append("Capacity of quantity busbar is ").append(capasity_all).append(" m\u00B3.").append("\n");
+
+        String s = geometryInfoSb.toString();
+
+        mGeometryInfo_tv.setText(s);
+
+
     }
 
     private void setWatchersAndListeners() {

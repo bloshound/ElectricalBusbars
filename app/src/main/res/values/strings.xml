@@ -3,6 +3,8 @@
     <string name="chose_or_input_params_of_busbars">Chose or input params of busbars:</string>
     <string name="def_density">Default density</string>
 
+    <string name="select_material_label">Choose or input name of material:</string>
+    <string name="select_density_label">Enter or put default density of busbars:</string>
     <string name="select_quantity_label">Select the quantity of busbars:</string>
     <string name="select_length_label">Select length of busbars:</string>
     <string name="select_width_label">Select width of busbars:</string>
@@ -37,5 +39,7 @@
     <string name="length">length</string>
     <string name="width">width</string>
     <string name="thickness">thickness</string>
+
+
 
 </resources>

@@ -25,48 +25,83 @@
                 android:id="@+id/tv_label_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center"
                 android:text="@string/chose_or_input_params_of_busbars"
                 android:textSize="@dimen/label_fontSize" />
 
-            <AutoCompleteTextView
-                android:id="@+id/auto_tv_chosen_material"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:completionThreshold="0"
-                android:gravity="start|center_vertical"
-                android:hint="@string/material"
-                android:inputType="textAutoCorrect"
-                android:textColorHint="@color/purple_200" />
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/label_material"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:gravity="start"
+                    android:text="@string/select_material_label"
+                    android:textSize="@dimen/label_fontSize" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/auto_tv_chosen_material"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:completionThreshold="0"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/material"
+                    android:inputType="textAutoCorrect"
+                    android:textColorHint="@color/purple_200" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_density"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/ed_density"
+                <TextView
+                    android:id="@+id/label_density"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="4"
-                    android:inputType="number"
-                    android:tag="@string/density"
-                    android:textColor="@color/purple_700"
-                    android:textColorHint="@color/purple_200" />
+                    android:gravity="start"
+                    android:text="@string/select_density_label"
+                    android:textSize="@dimen/label_fontSize" />
 
-                <CheckBox
-                    android:id="@+id/check_density"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="@string/def_density"
-                    android:textColor="@color/purple_200"
-                    android:textSize="@dimen/label_fontSize" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ed_density"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="4"
+                        android:inputType="number"
+                        android:tag="@string/density"
+                        android:textColor="@color/purple_700"
+                        android:textColorHint="@color/purple_200" />
+
+                    <CheckBox
+                        android:id="@+id/check_density"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/def_density"
+                        android:textColor="@color/purple_200"
+                        android:textSize="@dimen/label_fontSize" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -208,7 +243,6 @@
                 android:id="@+id/ll_thickness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -249,6 +283,14 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_geometry_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                />
 
 
         </LinearLayout>
