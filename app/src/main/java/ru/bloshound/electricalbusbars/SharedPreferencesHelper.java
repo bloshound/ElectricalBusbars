@@ -1,5 +1,6 @@
 package ru.bloshound.electricalbusbars;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -16,7 +17,9 @@ import java.util.Map;
 public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
     public static final String BUSBAR_KEY = "busbar_key";
-    public static final Type BUSBAR_TYPE = new TypeToken<Map<String, Busbar>>() {
+    public static final String QUANTITY_KEY = "quantity_key";
+    public static final String MATERAIL_KEY = "material_key";
+    public static final Type BUSBAR_TYPE = new TypeToken<HashMap<String, Busbar>>() {
     }.getType();
 
 
@@ -32,24 +35,29 @@ public class SharedPreferencesHelper {
     private Gson mGson = new Gson();
     private Context context;
 
-    private String lastMaterial;
-    private int lastQuantity;
 
+    @SuppressLint("CommitPrefEdits")
     public void setLastQuantity(int quantity) {
-        this.lastQuantity = quantity;
+        mSharedPreferences.edit().putInt(QUANTITY_KEY, quantity);
+        System.out.println(quantity);
     }
 
     public int getLastQuantity() {
-        return lastQuantity;
+        System.out.println("___quantity___");
+        return mSharedPreferences.getInt(QUANTITY_KEY, context.getResources().getInteger(R.integer.min_value));
+
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void setLastMaterial(String material) {
-        this.lastMaterial = material;
-
+        mSharedPreferences.edit().putString(MATERAIL_KEY, material);
+        System.out.println(material);
     }
 
     public String getLastMaterial() {
-        return lastMaterial;
+        System.out.println("material");
+        return mSharedPreferences.getString(MATERAIL_KEY, null);
+
     }
 
 
@@ -75,13 +83,17 @@ public class SharedPreferencesHelper {
         initBusbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
 
         HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
+        System.out.println(busbars);
         return busbars == null ? initBusbars : busbars;
+
     }
 
     public boolean putBusbar(Busbar busbar) {
         HashMap<String, Busbar> busbars = getSavedBusbars();
         busbars.put(busbar.getMaterial(), busbar);
+
         mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
+        System.out.println(busbars.entrySet());
         return true;
     }
 

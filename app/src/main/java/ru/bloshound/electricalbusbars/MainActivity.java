@@ -5,14 +5,11 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -63,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
         if (hasFocus) mMaterial_auto_tv.showDropDown();
+        System.out.println(Arrays.toString(mSharedPreferencesHelper.getMaterials()));
     };
 
     private AfterChangeTextWatcher mMaterialWatcher;
@@ -180,8 +178,29 @@ public class MainActivity extends AppCompatActivity {
 
 
         mSaveCalculateListener = v -> {
+            List<EditText> viewList = Arrays.asList(mDensity_ed, mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed);
+            for (EditText ed : viewList) {
+                ed.clearFocus();
+            }
 
 
+            String materail = mMaterial_auto_tv.getText().toString();
+
+            int quantity = Integer.parseInt(mQuantity_ed.getText().toString());
+            int density = Integer.parseInt(mDensity_ed.getText().toString());
+            int length = Integer.parseInt(mLength_ed.getText().toString());
+            int width = Integer.parseInt(mWidth_ed.getText().toString());
+            int thickness = Integer.parseInt(mThickness_ed.getText().toString());
+
+            mSharedPreferencesHelper.setLastMaterial(materail);
+            System.out.println(materail);
+            mSharedPreferencesHelper.setLastQuantity(quantity);
+            System.out.println(quantity);
+
+            Busbar createdBusbar = new Busbar(materail, density, length, width, thickness) {
+            };
+
+            mSharedPreferencesHelper.putBusbar(createdBusbar);
         };
 
         mDensityCheckListener = (buttonView, isChecked) -> {
@@ -255,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         Resources r = getResources();
         String initMaterial;
         int initQuantity, initDensity, initLength, initWidth, initThickness;
-        if (mSharedPreferencesHelper.getLastMaterial() == null) {
+        if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
 
             initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);
@@ -369,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
         mDensity_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
 
         mDensity_check.setOnCheckedChangeListener(mDensityCheckListener);
+        mSavaCalculate.setOnClickListener(mSaveCalculateListener);
 
     }
 
