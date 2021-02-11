@@ -36,6 +36,12 @@ public class SharedPreferencesHelper {
     private Context context;
 
 
+    public SharedPreferencesHelper(Context context) {
+        this.context = context;
+        this.mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+
 
     public void setLastQuantity(int quantity) {
         mSharedPreferences.edit().putInt(QUANTITY_KEY, quantity).apply();
@@ -46,7 +52,7 @@ public class SharedPreferencesHelper {
 
     }
 
-    @SuppressLint("CommitPrefEdits")
+
     public void setLastMaterial(String material) {
         mSharedPreferences.edit().putString(MATERIAL_KEY, material).apply();
         System.out.println(material);
@@ -58,10 +64,6 @@ public class SharedPreferencesHelper {
     }
 
 
-    public SharedPreferencesHelper(Context context) {
-        this.context = context;
-        this.mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-    }
 
 
     public HashMap<String, Busbar> getSavedBusbars() {
