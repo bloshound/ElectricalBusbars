@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.slider.Slider;
 
 import java.util.Arrays;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private Slider mWidth_slider;
     private Slider mThickness_slider;
     private TextView mGeometryInfo_tv;
+    private ExtendedFloatingActionButton mSavaCalculate;
 
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
@@ -81,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
     private SliderAfterChangeTextWatcher mThicknessInputWatchSlider;
     private Slider.OnChangeListener mThicknessSliderListener;
 
-
     private MinMaxEditTextWatcher mDensityMinMaxInput;
 
     private CompoundButton.OnCheckedChangeListener mDensityCheckListener;
+
+    private View.OnClickListener mSaveCalculateListener;
 
 
     @Override
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         mThickness_slider = findViewById(R.id.slider_thickness);
         mGeometryInfo_tv = findViewById(R.id.tv_geometry_information);
 
+        mSavaCalculate = findViewById(R.id.fab_save_calculate);
 
         mMaterialAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,
@@ -171,6 +176,12 @@ public class MainActivity extends AppCompatActivity {
         mThicknessSliderListener = (slider, value, fromUser) -> {
             mThickness_ed.setText(String.valueOf((int) value));
             setGeometryInfo();
+        };
+
+
+        mSaveCalculateListener = v -> {
+
+
         };
 
         mDensityCheckListener = (buttonView, isChecked) -> {
@@ -377,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private static class EmptyToMinOnFocusChangeListener implements View.OnFocusChangeListener {
 
