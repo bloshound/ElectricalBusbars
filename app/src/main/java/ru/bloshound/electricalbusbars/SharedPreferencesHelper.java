@@ -18,7 +18,7 @@ public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
     public static final String BUSBAR_KEY = "busbar_key";
     public static final String QUANTITY_KEY = "quantity_key";
-    public static final String MATERAIL_KEY = "material_key";
+    public static final String MATERIAL_KEY = "material_key";
     public static final Type BUSBAR_TYPE = new TypeToken<HashMap<String, Busbar>>() {
     }.getType();
 
@@ -36,27 +36,24 @@ public class SharedPreferencesHelper {
     private Context context;
 
 
-    @SuppressLint("CommitPrefEdits")
+
     public void setLastQuantity(int quantity) {
-        mSharedPreferences.edit().putInt(QUANTITY_KEY, quantity);
-        System.out.println(quantity);
+        mSharedPreferences.edit().putInt(QUANTITY_KEY, quantity).apply();
     }
 
     public int getLastQuantity() {
-        System.out.println("___quantity___");
         return mSharedPreferences.getInt(QUANTITY_KEY, context.getResources().getInteger(R.integer.min_value));
 
     }
 
     @SuppressLint("CommitPrefEdits")
     public void setLastMaterial(String material) {
-        mSharedPreferences.edit().putString(MATERAIL_KEY, material);
+        mSharedPreferences.edit().putString(MATERIAL_KEY, material).apply();
         System.out.println(material);
     }
 
     public String getLastMaterial() {
-        System.out.println("material");
-        return mSharedPreferences.getString(MATERAIL_KEY, null);
+        return mSharedPreferences.getString(MATERIAL_KEY, null);
 
     }
 

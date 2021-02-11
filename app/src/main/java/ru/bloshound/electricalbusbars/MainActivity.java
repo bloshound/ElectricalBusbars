@@ -193,14 +193,9 @@ public class MainActivity extends AppCompatActivity {
             int thickness = Integer.parseInt(mThickness_ed.getText().toString());
 
             mSharedPreferencesHelper.setLastMaterial(materail);
-            System.out.println(materail);
             mSharedPreferencesHelper.setLastQuantity(quantity);
-            System.out.println(quantity);
 
-            Busbar createdBusbar = new Busbar(materail, density, length, width, thickness) {
-            };
 
-            mSharedPreferencesHelper.putBusbar(createdBusbar);
         };
 
         mDensityCheckListener = (buttonView, isChecked) -> {
@@ -274,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
         Resources r = getResources();
         String initMaterial;
         int initQuantity, initDensity, initLength, initWidth, initThickness;
-        if (TextUtils.isEmpty(mSharedPreferencesHelper.getLastMaterial())) {
+        if (mSharedPreferencesHelper.getLastMaterial() == null) {
 
             initMaterial = new Random().nextBoolean() ?
                     r.getString(R.string.aluminium_material) : r.getString(R.string.copper_material);

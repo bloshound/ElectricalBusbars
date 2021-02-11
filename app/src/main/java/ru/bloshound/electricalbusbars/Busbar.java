@@ -37,4 +37,17 @@ public abstract class Busbar implements Serializable{
     public int getThickness() {
         return thickness;
     }
+
+
+    @Override
+    public String toString() {
+        return "Busbar{" +
+                "material='" + material + '\'' +
+                ", density=" + density +
+                ", length=" + length +
+                ", width=" + width +
+                ", thickness=" + thickness +
+                '}';
+    }
 }
+
