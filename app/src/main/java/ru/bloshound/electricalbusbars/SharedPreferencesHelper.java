@@ -36,6 +36,7 @@ public class SharedPreferencesHelper {
 
 
     public SharedPreferencesHelper(Context context) {
+        System.out.println(BUSBAR_TYPE);
         this.context = context;
         this.mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
@@ -64,6 +65,7 @@ public class SharedPreferencesHelper {
 
 
     public HashMap<String, Busbar> getSavedBusbars() {
+
         HashMap<String, Busbar> initBusbars = new HashMap<>();
         Busbar copperBusbar = new Busbar(context.getResources().getString(R.string.copper_material), context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
                 context.getResources().getInteger(R.integer.default_width),
@@ -80,8 +82,9 @@ public class SharedPreferencesHelper {
 
         mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(initBusbars, BUSBAR_TYPE)).apply();
 
-        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
-        return busbars == null ? initBusbars : busbars;
+
+        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, null), BUSBAR_TYPE);
+        return busbars.size() == 0 ? initBusbars : busbars;
 
     }
 
