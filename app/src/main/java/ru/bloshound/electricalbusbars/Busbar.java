@@ -1,10 +1,10 @@
 package ru.bloshound.electricalbusbars;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public abstract class Busbar implements Serializable{
+public class Busbar implements Serializable{
 
     private String material;
     private int density;
@@ -19,6 +19,7 @@ public abstract class Busbar implements Serializable{
         this.width = width;
         this.thickness = thickness;
     }
+
 
     public String getMaterial() {
         return material;
@@ -41,7 +42,6 @@ public abstract class Busbar implements Serializable{
     }
 
 
-    @NotNull
     @Override
     public String toString() {
         return "Busbar{" +

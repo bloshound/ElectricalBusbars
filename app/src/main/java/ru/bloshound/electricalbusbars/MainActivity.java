@@ -178,13 +178,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         mSaveCalculateListener = v -> {
-            List<EditText> viewList = Arrays.asList(mDensity_ed, mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed);
+            List<EditText> viewList = Arrays.asList(mDensity_ed, mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed, mMaterial_auto_tv);
             for (EditText ed : viewList) {
                 ed.clearFocus();
             }
 
-
-            String materail = mMaterial_auto_tv.getText().toString();
+            String material = mMaterial_auto_tv.getText().toString();
+            if (TextUtils.isEmpty(material)) {
+                Toast toast = Toast.makeText(this, "Input material", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP, 0, 300);
+                toast.show();
+            }
 
             int quantity = Integer.parseInt(mQuantity_ed.getText().toString());
             int density = Integer.parseInt(mDensity_ed.getText().toString());
@@ -192,8 +196,9 @@ public class MainActivity extends AppCompatActivity {
             int width = Integer.parseInt(mWidth_ed.getText().toString());
             int thickness = Integer.parseInt(mThickness_ed.getText().toString());
 
-            mSharedPreferencesHelper.setLastMaterial(materail);
+            mSharedPreferencesHelper.setLastMaterial(material);
             mSharedPreferencesHelper.setLastQuantity(quantity);
+            mSharedPreferencesHelper.putBusbar(new Busbar(material, density, length, width, thickness));
 
 
         };

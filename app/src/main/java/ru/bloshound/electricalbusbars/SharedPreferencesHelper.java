@@ -36,9 +36,10 @@ public class SharedPreferencesHelper {
 
 
     public SharedPreferencesHelper(Context context) {
-        System.out.println(BUSBAR_TYPE);
         this.context = context;
         this.mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+
     }
 
 
@@ -63,33 +64,32 @@ public class SharedPreferencesHelper {
 
     }
 
-
     public HashMap<String, Busbar> getSavedBusbars() {
+        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
+        if (busbars == null) {
+            busbars = new HashMap<>();
+            Busbar aluminiumBusbar = new Busbar(context.getResources().getString(R.string.aluminium_material),
+                    context.getResources().getInteger(R.integer.aluminium_density),
+                    context.getResources().getInteger(R.integer.default_length),
+                    context.getResources().getInteger(R.integer.default_width),
+                    context.getResources().getInteger(R.integer.default_thickness));
+            Busbar copperBusbar = new Busbar(context.getResources().getString(R.string.copper_material),
+                    context.getResources().getInteger(R.integer.copper_density),
+                    context.getResources().getInteger(R.integer.default_length),
+                    context.getResources().getInteger(R.integer.default_width),
+                    context.getResources().getInteger(R.integer.default_thickness));
 
-        HashMap<String, Busbar> initBusbars = new HashMap<>();
-        Busbar copperBusbar = new Busbar(context.getResources().getString(R.string.copper_material), context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
-                context.getResources().getInteger(R.integer.default_width),
-                context.getResources().getInteger(R.integer.default_thickness)) {
-        };
+            busbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
+            busbars.put(copperBusbar.getMaterial(), copperBusbar);
+            mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
 
-        Busbar aluminiumBusbar = new Busbar(context.getResources().getString(R.string.aluminium_material), context.getResources().getInteger(R.integer.aluminium_density), context.getResources().getInteger(R.integer.default_length),
-                context.getResources().getInteger(R.integer.default_width),
-                context.getResources().getInteger(R.integer.default_thickness)) {
-        };
-
-        initBusbars.put(copperBusbar.getMaterial(), copperBusbar);
-        initBusbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
-
-        mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(initBusbars, BUSBAR_TYPE)).apply();
-
-
-        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, null), BUSBAR_TYPE);
-        return busbars.size() == 0 ? initBusbars : busbars;
-
+        }
+        return busbars;
     }
 
     public boolean putBusbar(Busbar busbar) {
         HashMap<String, Busbar> busbars = getSavedBusbars();
+        System.out.println(busbars);
         busbars.put(busbar.getMaterial(), busbar);
 
         mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
