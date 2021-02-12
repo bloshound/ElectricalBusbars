@@ -1,6 +1,5 @@
 package ru.bloshound.electricalbusbars;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -64,8 +63,6 @@ public class SharedPreferencesHelper {
     }
 
 
-
-
     public HashMap<String, Busbar> getSavedBusbars() {
         HashMap<String, Busbar> initBusbars = new HashMap<>();
         Busbar copperBusbar = new Busbar(context.getResources().getString(R.string.copper_material), context.getResources().getInteger(R.integer.copper_density), context.getResources().getInteger(R.integer.default_length),
@@ -81,8 +78,9 @@ public class SharedPreferencesHelper {
         initBusbars.put(copperBusbar.getMaterial(), copperBusbar);
         initBusbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
 
+        mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(initBusbars, BUSBAR_TYPE)).apply();
+
         HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
-        System.out.println(busbars);
         return busbars == null ? initBusbars : busbars;
 
     }

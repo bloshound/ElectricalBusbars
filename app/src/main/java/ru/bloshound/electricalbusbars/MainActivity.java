@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Slider mWidth_slider;
     private Slider mThickness_slider;
     private TextView mGeometryInfo_tv;
-    private ExtendedFloatingActionButton mSavaCalculate;
+    private ExtendedFloatingActionButton mSaveCalculate_btn;
 
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         mThickness_slider = findViewById(R.id.slider_thickness);
         mGeometryInfo_tv = findViewById(R.id.tv_geometry_information);
 
-        mSavaCalculate = findViewById(R.id.fab_save_calculate);
+        mSaveCalculate_btn = findViewById(R.id.fab_save_calculate);
 
         mMaterialAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,
@@ -310,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
         mThickness_slider.setValue(initThickness);
 
         if (savedInstanceState == null) {
-
             if (initMaterial.toLowerCase().contains(r.getString(R.string.copper_material))) {
                 root.setBackground(ResourcesCompat.getDrawable(r, R.drawable.gradient_copper, null));
                 root.setTag(R.drawable.gradient_copper);
@@ -322,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                 root.setTag(R.drawable.gradient_other);
             }
         }
-
         setGeometryInfo();
     }
 
@@ -383,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         mDensity_ed.setOnFocusChangeListener(new EmptyToMinOnFocusChangeListener(this));
 
         mDensity_check.setOnCheckedChangeListener(mDensityCheckListener);
-        mSavaCalculate.setOnClickListener(mSaveCalculateListener);
+        mSaveCalculate_btn.setOnClickListener(mSaveCalculateListener);
 
     }
 
@@ -406,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static class EmptyToMinOnFocusChangeListener implements View.OnFocusChangeListener {
-
         Context context;
 
         public EmptyToMinOnFocusChangeListener(Context context) {

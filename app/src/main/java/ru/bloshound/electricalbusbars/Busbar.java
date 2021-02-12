@@ -1,5 +1,7 @@
 package ru.bloshound.electricalbusbars;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public abstract class Busbar implements Serializable{
@@ -39,6 +41,7 @@ public abstract class Busbar implements Serializable{
     }
 
 
+    @NotNull
     @Override
     public String toString() {
         return "Busbar{" +
