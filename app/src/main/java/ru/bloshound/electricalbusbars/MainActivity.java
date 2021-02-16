@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                         ((EditText) v).setText(String.valueOf((context.getResources().getInteger(R.integer.min_value))));
 
                         Toast toast = Toast.makeText(context,
-                                "Parametr: " + (String) v.getTag() + " is empty,\nseted minimal available value",
+                                "Parameter: " + (String) v.getTag() + " is empty,\nset minimal available value",
                                 Toast.LENGTH_SHORT);
                         View parentV_x2 = (View) v.getParent().getParent();
                         toast.setGravity(Gravity.TOP, 0, (int) parentV_x2.getY() + 200);
