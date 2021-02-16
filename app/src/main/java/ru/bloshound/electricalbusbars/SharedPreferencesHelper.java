@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SharedPreferencesHelper {
     public static final String SHARED_PREF_NAME = "shared_pref_name";
-    public static final String BUSBAR_KEY = "busbar_key";
+    public static final String BUSBARS_KEY = "busbars_key";
     public static final String QUANTITY_KEY = "quantity_key";
     public static final String MATERIAL_KEY = "material_key";
     public static final Type BUSBAR_TYPE = new TypeToken<HashMap<String, Busbar>>() {
@@ -38,11 +38,7 @@ public class SharedPreferencesHelper {
     public SharedPreferencesHelper(Context context) {
         this.context = context;
         this.mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-
     }
-
-
 
     public void setLastQuantity(int quantity) {
         mSharedPreferences.edit().putInt(QUANTITY_KEY, quantity).apply();
@@ -52,7 +48,6 @@ public class SharedPreferencesHelper {
         return mSharedPreferences.getInt(QUANTITY_KEY, context.getResources().getInteger(R.integer.min_value));
 
     }
-
 
     public void setLastMaterial(String material) {
         mSharedPreferences.edit().putString(MATERIAL_KEY, material).apply();
@@ -65,7 +60,7 @@ public class SharedPreferencesHelper {
     }
 
     public HashMap<String, Busbar> getSavedBusbars() {
-        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBAR_KEY, ""), BUSBAR_TYPE);
+        HashMap<String, Busbar> busbars = mGson.fromJson(mSharedPreferences.getString(BUSBARS_KEY, ""), BUSBAR_TYPE);
         if (busbars == null) {
             busbars = new HashMap<>();
             Busbar aluminiumBusbar = new Busbar(context.getResources().getString(R.string.aluminium_material),
@@ -81,7 +76,7 @@ public class SharedPreferencesHelper {
 
             busbars.put(aluminiumBusbar.getMaterial(), aluminiumBusbar);
             busbars.put(copperBusbar.getMaterial(), copperBusbar);
-            mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
+            mSharedPreferences.edit().putString(BUSBARS_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
 
         }
         return busbars;
@@ -92,7 +87,7 @@ public class SharedPreferencesHelper {
         System.out.println(busbars);
         busbars.put(busbar.getMaterial(), busbar);
 
-        mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
+        mSharedPreferences.edit().putString(BUSBARS_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
         System.out.println(busbars.entrySet());
     }
 
@@ -103,9 +98,7 @@ public class SharedPreferencesHelper {
         for (Map.Entry<String, Busbar> pair : getSavedBusbars().entrySet()) {
             listOfMaterials.add(pair.getKey());
         }
-
         return listOfMaterials.toArray(new String[0]);
-
     }
 
 }
