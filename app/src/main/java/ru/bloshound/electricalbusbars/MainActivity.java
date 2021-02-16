@@ -25,6 +25,7 @@ import com.google.android.material.slider.Slider;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import ru.bloshound.electricalbusbars.util.AfterChangeTextWatcher;
@@ -60,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnFocusChangeListener mOnMaterialFocusChangeListener = (v, hasFocus) -> {
         if (hasFocus) mMaterial_auto_tv.showDropDown();
-        System.out.println(Arrays.toString(mSharedPreferencesHelper.getMaterials()));
     };
 
-    private AfterChangeTextWatcher mMaterialWatcher;
+    private AfterChangeTextWatcher mMaterialChangeColorWatcher;
+    private AfterChangeTextWatcher mMaterialChangeViewWatcher;
 
 
     private MinMaxEditTextWatcher mQuantityMinMaxInput;
@@ -120,9 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 mSharedPreferencesHelper.getMaterials());
         mMaterial_auto_tv.setAdapter(mMaterialAdapter);
 
-
         initFromPreferences(savedInstanceState);
-
 
         mQuantityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.quantity_max_value));
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         mDensityMinMaxInput = new MinMaxEditTextWatcher(getResources().getInteger(R.integer.min_value),
                 getResources().getInteger(R.integer.density_max_value));
 
-        mMaterialWatcher = new AfterChangeTextWatcher() {
+        mMaterialChangeColorWatcher = new AfterChangeTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 Resources r = getResources();
@@ -153,11 +152,24 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+        mMaterialChangeViewWatcher = new AfterChangeTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                for (Map.Entry<String, Busbar> pair : mSharedPreferencesHelper.getSavedBusbars().entrySet()) {
+                    if (s.toString().toLowerCase().equals(pair.getValue().getMaterial())) {
+                        mDensity_ed.setText(String.valueOf(pair.getValue().getDensity()));
+                        mLength_ed.setText(String.valueOf(pair.getValue().getLength()));
+                        mWidth_ed.setText(String.valueOf(pair.getValue().getWidth()));
+                        mThickness_ed.setText(String.valueOf(pair.getValue().getThickness()));
+                    }
+                }
+            }
+        };
+
         mQuantityInputWatchSlider = new SliderAfterChangeTextWatcher(mQuantity_slider);
         mLengthInputWatchSlider = new SliderAfterChangeTextWatcher(mLength_slider);
         mWidthInputWatchSlider = new SliderAfterChangeTextWatcher(mWidth_slider);
         mThicknessInputWatchSlider = new SliderAfterChangeTextWatcher(mThickness_slider);
-
 
         mQuantitySliderListener = (slider, value, fromUser) -> {
             mQuantity_ed.setText(String.valueOf((int) value));
@@ -178,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         mSaveCalculateListener = v -> {
-            List<EditText> viewList = Arrays.asList(mDensity_ed, mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed, mMaterial_auto_tv);
-            for (EditText ed : viewList) {
+            List<EditText> ed_List = Arrays.asList(mDensity_ed, mQuantity_ed, mLength_ed, mWidth_ed, mThickness_ed, mMaterial_auto_tv);
+            for (EditText ed : ed_List) {
                 ed.clearFocus();
             }
 
@@ -188,20 +200,25 @@ public class MainActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(this, "Input material", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP, 0, 300);
                 toast.show();
+
+            } else {
+                int quantity = Integer.parseInt(mQuantity_ed.getText().toString());
+                int density = Integer.parseInt(mDensity_ed.getText().toString());
+                int length = Integer.parseInt(mLength_ed.getText().toString());
+                int width = Integer.parseInt(mWidth_ed.getText().toString());
+                int thickness = Integer.parseInt(mThickness_ed.getText().toString());
+
+                mSharedPreferencesHelper.setLastMaterial(material);
+                mSharedPreferencesHelper.setLastQuantity(quantity);
+                mSharedPreferencesHelper.putBusbar(new Busbar(material, density, length, width, thickness));
+
+                mMaterialAdapter = new ArrayAdapter<>(this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        mSharedPreferencesHelper.getMaterials());
+                mMaterial_auto_tv.setAdapter(mMaterialAdapter);
             }
-
-            int quantity = Integer.parseInt(mQuantity_ed.getText().toString());
-            int density = Integer.parseInt(mDensity_ed.getText().toString());
-            int length = Integer.parseInt(mLength_ed.getText().toString());
-            int width = Integer.parseInt(mWidth_ed.getText().toString());
-            int thickness = Integer.parseInt(mThickness_ed.getText().toString());
-
-            mSharedPreferencesHelper.setLastMaterial(material);
-            mSharedPreferencesHelper.setLastQuantity(quantity);
-            mSharedPreferencesHelper.putBusbar(new Busbar(material, density, length, width, thickness));
-
-
         };
+
 
         mDensityCheckListener = (buttonView, isChecked) -> {
             Resources r = getResources();
@@ -360,7 +377,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setWatchersAndListeners() {
         mMaterial_auto_tv.setOnFocusChangeListener(mOnMaterialFocusChangeListener);
-        mMaterial_auto_tv.addTextChangedListener(mMaterialWatcher);
+        mMaterial_auto_tv.addTextChangedListener(mMaterialChangeColorWatcher);
+        mMaterial_auto_tv.addTextChangedListener(mMaterialChangeViewWatcher);
+
 
         mQuantity_ed.addTextChangedListener(mQuantityMinMaxInput);
         mQuantity_ed.addTextChangedListener(mQuantityInputWatchSlider);

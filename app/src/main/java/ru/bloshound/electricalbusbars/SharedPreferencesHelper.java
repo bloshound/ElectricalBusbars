@@ -87,14 +87,13 @@ public class SharedPreferencesHelper {
         return busbars;
     }
 
-    public boolean putBusbar(Busbar busbar) {
+    public void putBusbar(Busbar busbar) {
         HashMap<String, Busbar> busbars = getSavedBusbars();
         System.out.println(busbars);
         busbars.put(busbar.getMaterial(), busbar);
 
         mSharedPreferences.edit().putString(BUSBAR_KEY, mGson.toJson(busbars, BUSBAR_TYPE)).apply();
         System.out.println(busbars.entrySet());
-        return true;
     }
 
 
